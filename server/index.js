@@ -5,7 +5,7 @@ const db = require('./db');
 const logEventRouter = require('./routes/log-event.router')
 
 const app = express();
-const apiPort = 3000;
+const apiPort = 3001;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
