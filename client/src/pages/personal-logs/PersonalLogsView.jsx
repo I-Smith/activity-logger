@@ -8,8 +8,8 @@ const PersonalLogsView = ({
 	handleClick
 }) => (
 	<div className="container">
-	    <div className="jumbotron">
-            <h1 className="display-4">
+		<div className="jumbotron">
+			<h1 className="display-4">
 				Hello, welcome to your activity chart!
 			</h1>
 			<Button onClick={handleClick}>
@@ -32,9 +32,9 @@ const PersonalLogsView = ({
 							</tr>
 						))}
 					</tbody>
-			  </Table>
+				</Table>
 			)}
-    </div>
+	</div>
 );
 
 export default PersonalLogsView;

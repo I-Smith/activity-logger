@@ -26,8 +26,8 @@ export default (state, action) => createReducer(state, action, reducers, initial
 // });
 
 reducers[LOG_EVENT] = (state, { payload: { event } }) => ([
-    ...state,
-    {
-        ...event,
-    }
+	...state,
+	{
+		...event,
+	}
 ]);
