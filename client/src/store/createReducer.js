@@ -9,16 +9,16 @@
  * @returns {object} - The next state.
  */
 export default (
-    currentState,
-    action,
-    reducers,
-    initalState,
+	currentState,
+	action,
+	reducers,
+	initalState,
 ) => {
-    const targetReducer = reducers[action.type];
+	const targetReducer = reducers[action.type];
 
-    // Execute reducer if it exists
-    if (typeof targetReducer === 'function') {
-        return targetReducer(currentState || initalState, action)
-    }
-    return currentState || initalState;
+	// Execute reducer if it exists
+	if (typeof targetReducer === 'function') {
+			return targetReducer(currentState || initalState, action)
+	}
+	return currentState || initalState;
 }

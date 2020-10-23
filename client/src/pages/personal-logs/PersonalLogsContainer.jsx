@@ -24,17 +24,17 @@ class PersonalLogsContainer extends React.PureComponent {
 		actions.logEvent();
 	}
 
-    render() {
+	render() {
 		const {
 			events,
 		} = this.props;
-        return (
+		return (
 			<PersonalLogsView
 				events={events}
 				handleClick={this._handleClick}
 			/>
 		);
-    }
+	}
 }
 
 const mapStateToProps = (state) => ({
