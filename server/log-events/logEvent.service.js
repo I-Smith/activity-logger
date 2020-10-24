@@ -20,17 +20,17 @@ async function getById(eventId) {
 
 async function create(params) {
     // validate
-    if (!db.isValidId(params.accountId)) throw 'Account ID invalid';
+    if (!db.isValidId(params.userId)) throw 'User ID invalid';
 
     const logEvent = new db.LogEvent(params);
 
     // save logEvent
 	await logEvent.save();
 	
-	// push logEvent to account.
-	const account = await db.Account.findById(params.accountId);
-	account.logEvents.push(logEvent)
-	await account.save();
+	// push logEvent to user.
+	const user = await db.User.findById(params.userId);
+	user.logEvents.push(logEvent)
+	await user.save();
 	
     return logEvent;
 }
@@ -38,17 +38,17 @@ async function create(params) {
 async function update(eventId, params) {
     const logEvent = await getLogEvent(eventId);
 
-    if (params.accountId && logEvent.accountId !== params.accountId) {
+    if (params.userId && logEvent.userId !== params.userId) {
 		// validate
-		if (!db.isValidId(params.accountId)) throw 'Account ID invalid';
-		// Remove log from old account and add to new
-		const newAccount = await db.Account.findById(params.accountId);
-		const oldAccount = await db.Account.findById(logEvent.accountId);
+		if (!db.isValidId(params.userId)) throw 'User ID invalid';
+		// Remove log from old user and add to new
+		const newUser = await db.User.findById(params.userId);
+		const oldUser = await db.User.findById(logEvent.userId);
 
-		newAccount.logEvents.push(logEvent);
-		await newAccount.save();
-		oldAccount.logEvents.pull(logEvent);
-		await oldAccount.save();
+		newUser.logEvents.push(logEvent);
+		await newUser.save();
+		oldUser.logEvents.pull(logEvent);
+		await oldUser.save();
 	}
 	
 
@@ -62,10 +62,10 @@ async function update(eventId, params) {
 async function _delete(eventId) {
 	const logEvent = await getLogEvent(eventId);
 
-	// Remove from account
-	const oldAccount = await db.Account.findById(logEvent.accountId);
-	oldAccount.logEvents.pull(logEvent);
-	await oldAccount.save();
+	// Remove from user
+	const oldUser = await db.User.findById(logEvent.userId);
+	oldUser.logEvents.pull(logEvent);
+	await oldUser.save();
 	
     await logEvent.remove();
 }
