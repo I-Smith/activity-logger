@@ -4,9 +4,9 @@ const Joi = require('joi');
 const validateRequest = require('_middleware/validate-request');
 const authorize = require('_middleware/authorize')
 const Role = require('_helpers/role');
-const accountLogEventService = require('./accounts-event.service');
+const userLogEventService = require('./users-event.service');
 
-// routes (/accounts/:accountId/log-events/...)
+// routes (/users/:userId/log-events/...)
 router.get('/', authorize(), getAll);
 router.get('/:eventId', authorize(), getById);
 router.post('/', authorize(), createSchema, create);
@@ -16,23 +16,23 @@ router.delete('/:eventId', authorize(), _delete);
 module.exports = router;
 
 function getAll(req, res, next) {
-	// users can update their own account and admins can update any account
-	if (req.params.accountId !== req.user.id && req.user.role !== Role.Admin) {
+	// users can update their own user and admins can update any user
+	if (req.params.userId !== req.user.id && req.user.role !== Role.Admin) {
 		return res.status(401).json({ message: 'Unauthorized' });
 	}
 		
-    accountLogEventService.getAll(req.params.accountId)
+    userLogEventService.getAll(req.params.userId)
         .then(logEvents => res.json(logEvents))
         .catch(next);
 }
 
 function getById(req, res, next) {
-	// users can update their own account and admins can update any account
-	if (req.params.accountId !== req.user.id && req.user.role !== Role.Admin) {
+	// users can update their own user and admins can update any user
+	if (req.params.userId !== req.user.id && req.user.role !== Role.Admin) {
 		return res.status(401).json({ message: 'Unauthorized' });
 	}
 
-    accountLogEventService.getById(req.params.accountId, req.params.eventId)
+    userLogEventService.getById(req.params.userId, req.params.eventId)
         .then(logEvent => logEvent ? res.json(logEvent) : res.sendStatus(404))
         .catch(next);
 }
@@ -58,12 +58,12 @@ function createSchema(req, res, next) {
 }
 
 function create(req, res, next) {
-	// users can update their own account and admins can update any account
-	if (req.params.accountId !== req.user.id && req.user.role !== Role.Admin) {
+	// users can update their own user and admins can update any user
+	if (req.params.userId !== req.user.id && req.user.role !== Role.Admin) {
 		return res.status(401).json({ message: 'Unauthorized' });
 	}
 
-    accountLogEventService.create(req.params.accountId, req.body)
+    userLogEventService.create(req.params.userId, req.body)
         .then(logEvent => res.json(logEvent))
         .catch(next);
 }
@@ -89,23 +89,23 @@ function updateSchema(req, res, next) {
 }
 
 function update(req, res, next) {
-	// users can update their own account and admins can update any account
-	if (req.params.accountId !== req.user.id && req.user.role !== Role.Admin) {
+	// users can update their own user and admins can update any user
+	if (req.params.userId !== req.user.id && req.user.role !== Role.Admin) {
 		return res.status(401).json({ message: 'Unauthorized' });
 	}
 
-    accountLogEventService.update(req.params.accountId, req.params.eventId, req.body)
+    userLogEventService.update(req.params.userId, req.params.eventId, req.body)
         .then(logEvent => res.json(logEvent))
         .catch(next);
 }
 
 function _delete(req, res, next) {
-	// users can update their own account and admins can update any account
-	if (req.params.accountId !== req.user.id && req.user.role !== Role.Admin) {
+	// users can update their own user and admins can update any user
+	if (req.params.userId !== req.user.id && req.user.role !== Role.Admin) {
 		return res.status(401).json({ message: 'Unauthorized' });
 	}
 
-    accountLogEventService.delete(req.params.accountId, req.params.eventId)
+    userLogEventService.delete(req.params.userId, req.params.eventId)
         .then(() => res.json({ message: 'Log event deleted successfully' }))
         .catch(next);
 }

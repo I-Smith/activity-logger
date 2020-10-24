@@ -34,7 +34,7 @@ function getById(req, res, next) {
 
 function createSchema(req, res, next) {
     const schema = Joi.object({
-        accountId: Joi.string().required(),
+        userId: Joi.string().required(),
         date: Joi.date().required(),
         isWorkout: Joi.boolean(),
         challenge: Joi.string(),
@@ -61,7 +61,7 @@ function create(req, res, next) {
 
 function updateSchema(req, res, next) {
     const schemaRules = {
-		accountId: Joi.string(),
+		userId: Joi.string(),
         date: Joi.date(),
         isWorkout: Joi.boolean(),
         challenge: Joi.string(),

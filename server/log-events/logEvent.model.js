@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const schema = new Schema({
-    accountId: { type: String },
+    userId: { type: String },
 	date: { type: Date, required: true },
 	isWorkout: { type: Boolean, default: false },
 	challenge: { type: String },
