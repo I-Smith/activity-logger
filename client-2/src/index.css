@@ -1,0 +1,22 @@
+html, body, #app {
+	height: 100%;
+  }
+
+.page-content {
+	height: 100%;
+	padding: 10rem 1.5rem;
+}
+
+.Navbar-logo {
+	max-width: 211px;
+}
+.Navbar-color {
+	background: #ededed;
+}
+.Navbar-container {
+	width: 1600px;
+}
+.Unit-text {
+	font-size: x-small;
+	display: inline;
+}
