@@ -7,14 +7,30 @@ html, body, #app {
 	padding: 10rem 1.5rem;
 }
 
-.Navbar-logo {
-	max-width: 211px;
+.Modal {
+	position: relative;
+	top: 15rem;
 }
 .Navbar-color {
 	background: #ededed;
 }
 .Navbar-container {
 	width: 1600px;
+}
+.Navbar-link {
+	color: black;
+}
+.Navbar-link:hover {
+	color: #dc3545;
+}
+.Navbar-logo {
+	max-width: 211px;
+}
+.Table-action:hover .Delete {
+	color: #dc3545;
+}
+.Table-action:hover .Edit {
+	color: #ffc107;
 }
 .Unit-text {
 	font-size: x-small;
