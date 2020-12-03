@@ -2,6 +2,7 @@ import _ from 'lodash';
 import { userEventsConstants } from '../_constants';
 
 const initialState = {
+	needsReload: false,
 	loading: false,
 	creating: false,
 	deleting: false,
@@ -39,6 +40,7 @@ export function userEvents(state = initialState, { type, response, error }) {
 			return {
 				...state,
 				creating: false,
+				needsReload: true,
 				logEvents: [
 					...state.logEvents,
 					response,
@@ -60,6 +62,7 @@ export function userEvents(state = initialState, { type, response, error }) {
 			return {
 				...state,
 				deleting: false,
+				needsReload: true,
 				logEvents: _.reject(state.logEvents, { id: response.id }),
 			};
 		case userEventsConstants.DELETE_FAILURE:
@@ -78,6 +81,7 @@ export function userEvents(state = initialState, { type, response, error }) {
 			return {
 				...state,
 				updating: false,
+				needsReload: true,
 				logEvents: [
 					..._.reject(state.logEvents, { id: response.id }),
 					response,

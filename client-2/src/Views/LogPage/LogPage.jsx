@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { EventForm } from '../EventForm';
 import { LogTableRow } from './LogTableRow';
 
-import { userEventsActions } from '../_actions';
+import { userEventsActions } from '../../_actions';
 
 class LogPage extends React.Component {
 	constructor(props) {
@@ -17,6 +17,13 @@ class LogPage extends React.Component {
 	componentDidMount() {
 		const { user } = this.props;
 		this.props.dispatch(userEventsActions.getAll(user.id));
+	}
+
+	componentDidUpdate(prevProps) {
+		const { user, userEvents } = this.props;
+		if (userEvents.needsReload && !prevProps.userEvents.needsReload) {
+			this.props.dispatch(userEventsActions.getAll(user.id));
+		}
 	}
 
 	
@@ -40,15 +47,14 @@ class LogPage extends React.Component {
 						>
 							Add New Event
 						</EventForm>
-						{/* <button
-							className="btn btn-success"
-							type="button" 
-							>
-							Add New Event
-						</button> */}
 						<div className="mt-2">
-							{userEvents.loading && <em className="text-secondary">Loading log events...</em>}
-							{userEvents.error && <span className="text-danger">ERROR: {JSON.stringify(userEvents.error)}</span>}
+							{userEvents.loading && (
+								<div className="spinner-border text-secondary" role="status">
+									<span className="sr-only">Loading log events...</span>
+								</div>
+							)}
+							{userEvents.error && <span className="text-danger">Action could not be complete at this time.</span>}
+							{/* {userEvents.error && <span className="text-danger">ERROR: {JSON.stringify(userEvents.error)}</span>} */}
 						</div>
 
 						{_.size(userEvents.logEvents) > 0 ? (
@@ -65,9 +71,10 @@ class LogPage extends React.Component {
 									</tr>
 								</thead>
 								<tbody>
-									{userEvents.logEvents.map((event) => (
+									{userEvents.logEvents.map((event, index) => (
 										<LogTableRow
 											event={event}
+											key={index}
 										/>
 									))}
 								</tbody>

@@ -20,12 +20,14 @@ function getAll(userId) {
 function create(userId, eventOptions) {
 	const requestOptions = {
         method: 'POST',
-		headers: authHeader(),
+		headers: {
+			...authHeader(),
+			'Content-Type': 'application/json'
+		},
 		body: JSON.stringify(eventOptions),
 	};
-	// const userId = localStorage.getItem('user').id;
 
-    return fetch(`${config.apiUrl}/users/${userId}/log-events/`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/users/${userId}/log-events`, requestOptions).then(handleResponse);
 }
 
 function _delete(userId, eventId) {
@@ -33,7 +35,6 @@ function _delete(userId, eventId) {
         method: 'DELETE',
 		headers: authHeader(),
 	};
-	// const userId = localStorage.getItem('user').id;
 
     return fetch(`${config.apiUrl}/users/${userId}/log-events/${eventId}`, requestOptions).then(handleResponse);
 }
@@ -41,7 +42,10 @@ function _delete(userId, eventId) {
 function edit(userId, eventId, eventOptions) {
 	const requestOptions = {
         method: 'PUT',
-		headers: authHeader(),
+		headers: {
+			...authHeader(),
+			'Content-Type': 'application/json'
+		},
 		body: JSON.stringify(eventOptions),
 	};
 	// const userId = localStorage.getItem('user').id;

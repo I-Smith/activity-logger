@@ -5,10 +5,10 @@ import { connect } from 'react-redux';
 import { history } from '../_helpers';
 import { alertActions } from '../_actions';
 import { PrivateRoute } from '../_components';
-import { HomePage } from '../HomePage';
-import { LoginPage } from '../LoginPage';
-import { LogPage } from '../LogPage';
-import { NavBar } from '../NavBar';
+import { HomePage } from '../Views/HomePage';
+import { LoginPage, SignupPage } from '../Views/LoginPage';
+import { LogPage } from '../Views/LogPage';
+import { NavBar } from '../Views/NavBar';
 
 class App extends React.Component {
 	constructor(props) {
@@ -34,6 +34,7 @@ class App extends React.Component {
 						<PrivateRoute exact path="/" component={LogPage} />
 						<PrivateRoute path="/activity-log" component={LogPage} />
 						<Route path="/login" component={LoginPage} />
+						<Route path="/signup" component={SignupPage} />
 					</div>
 				</Router>
 			</React.Fragment>

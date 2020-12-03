@@ -4,7 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { EventForm } from '../EventForm';
 
-import { userEventsActions } from '../_actions';
+import { userEventsActions } from '../../_actions';
 
 class LogTableRow extends React.Component {
 	constructor(props) {
@@ -29,10 +29,10 @@ class LogTableRow extends React.Component {
 				duration = {},
 				couponWeight,
 				ruckWeight,
-			},
+			} = {},
 		} = event;
 		return (
-			<tr key={`event_${id}`}>
+			<tr id={`event_${id}`}>
 				<td>{dayjs(date).format('MM/DD/YY')}</td>
 				<td>{challenge}</td>
 				<td>{distance}</td>
@@ -46,13 +46,6 @@ class LogTableRow extends React.Component {
 					>
 						<span className="far fa-edit Edit"/>
 					</EventForm>
-					{/* <button
-						className="btn btn-link text-dark Table-action"
-						type="button"
-						onClick={() => {}}
-					>
-						<span className="far fa-edit Edit"/>
-					</button> */}
 					<button
 						className="btn btn-link text-dark Table-action"
 						type="button"
