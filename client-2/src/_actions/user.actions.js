@@ -5,7 +5,8 @@ import { history } from '../_helpers';
 
 export const userActions = {
     login,
-    logout,
+	logout,
+	register,
     getAll
 };
 
@@ -34,6 +35,27 @@ function login(email, password) {
 function logout() {
     userService.logout();
     return { type: userConstants.LOGOUT };
+}
+
+function register(registerOptions) {
+    return dispatch => {
+        dispatch(request());
+
+        userService.register(registerOptions)
+            .then(
+                response => { 
+                    dispatch(success());
+                },
+                error => {
+                    dispatch(failure());
+                    dispatch(alertActions.error(error));
+				}
+            );
+    };
+
+    function request(user) { return { type: userConstants.REGISTER_REQUEST, user } }
+    function success(user) { return { type: userConstants.REGISTER_SUCCESS, user } }
+    function failure(error) { return { type: userConstants.REGISTER_FAILURE, error } }
 }
 
 function getAll() {

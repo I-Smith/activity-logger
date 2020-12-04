@@ -53,7 +53,7 @@ class LoginPage extends React.Component {
 					</div>
 					<div className={'form-group' + (submitted && !password ? ' has-error' : '')}>
 						<label htmlFor="password">Password</label>
-						<input type="password" className="form-control" name="password" value={password} onChange={this.handleChange} />
+						<input type="password" className="form-control" name="password" value={password} onChange={this.handleChange}/>
 						{submitted && !password &&
 							<div className="help-block text-danger">Password is required</div>
 						}

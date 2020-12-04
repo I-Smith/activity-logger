@@ -17,6 +17,7 @@ class SignupPage extends React.Component {
 			email: '',
 			password: '',
 			confirmPassword: '',
+			acceptTerms: false,
 			submitted: false
 		};
 
@@ -39,10 +40,26 @@ class SignupPage extends React.Component {
 			email,
 			password,
 			confirmPassword,
+			acceptTerms,
 		} = this.state;
 		const { dispatch } = this.props;
-		if (email && password) {
-			dispatch(userActions.login(email, password));
+
+		if (
+			firstName
+			&& lastName
+			&& email
+			&& (password && password.length >= 6)
+			&& (confirmPassword && confirmPassword === password)
+			&& acceptTerms
+		) {
+			dispatch(userActions.signup({
+				firstName,
+				lastName,
+				email,
+				password,
+				confirmPassword,
+				acceptTerms
+			}));
 		}
 	}
 
@@ -54,6 +71,7 @@ class SignupPage extends React.Component {
 			email,
 			password,
 			confirmPassword,
+			acceptTerms,
 			submitted,
 		} = this.state;
 		return (
@@ -87,18 +105,28 @@ class SignupPage extends React.Component {
 						{submitted && !password &&
 							<div className="help-block text-danger">Password is required</div>
 						}
+						{submitted && password.length < 6 &&
+							<div className="help-block text-danger">Password must be at least 6 characters</div>
+						}
 					</div>
 					<div className={'form-group' + (submitted && (!confirmPassword || confirmPassword !== password) ? ' has-error' : '')}>
 						<label htmlFor="confirmPassword">Confirm Password</label>
-						<input type="confirmPassword" className="form-control" name="confirmPassword" value={confirmPassword} onChange={this.handleChange} />
+						<input type="password" className="form-control" name="confirmPassword" value={confirmPassword} onChange={this.handleChange} />
 						{submitted && (!confirmPassword || confirmPassword !== password) &&
 							<div className="help-block text-danger">Passwords must match</div>
 						}
 					</div>
+					<div className={'form group form-check' + (submitted && !acceptTerms ? ' has-error' : '')}>
+						<input type="checkbox" className="form-check-input" name="acceptTerms" value={acceptTerms} onChange={this.handleChange}/>
+						<label htmlFor="acceptTerms">I agree to the <a href="">Terms and Conditions</a></label>
+						{submitted && !acceptTerms &&
+							<div className="help-block text-danger">You must agree to continue</div>
+						}
+					</div>
 					{failed &&
-						<p className="text-danger">Incorrect Email or Password entered</p>
+						<p className="text-danger">Some required information is missing</p>
 					}
-					<div className="form-group">
+					<div className="form-group mt-4">
 						<button className="btn btn-primary">Sign Up</button>
 						{loggingIn &&
 							<img src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
