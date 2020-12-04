@@ -3,14 +3,14 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
     mode: 'development',
     resolve: {
-        extensions: ['.js', '.jsx']
+        extensions: ['.js', '.jsx', '.json', '.css', '.scss']
     },
     module: {
         rules: [
-            {
-                test: /\.jsx?$/,
-                loader: 'babel-loader'
-            }
+            { test: /\.jsx?$/, loader: 'babel-loader' },
+            { test: /\.css$/, use: ['style-loader', 'css-loader'] },
+            { test: /\.json$/, type: 'javascript/auto', loader: 'json-loader' },
+            { test: /\.(jpe?g|png|gif|ico)$/i, loader: 'file-loader?name=[name].[ext]' }
         ]
     },
     plugins: [new HtmlWebpackPlugin({
