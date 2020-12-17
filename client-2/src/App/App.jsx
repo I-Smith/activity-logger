@@ -1,12 +1,18 @@
 import React from 'react';
-import { Router, Route } from 'react-router-dom';
+import { Router, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { history } from '../_helpers';
 import { alertActions } from '../_actions';
 import { PrivateRoute } from '../_components';
 import { HomePage } from '../Views/HomePage';
-import { LoginPage, SignupPage } from '../Views/LoginPage';
+import {
+	ForgotPasswordPage,
+	LoginPage,
+	ResetPasswordPage,
+	SignupPage,
+	VerificationPage
+} from '../Views/LoginPage';
 import { LogPage } from '../Views/LogPage';
 import { NavBar } from '../Views/NavBar';
 
@@ -26,15 +32,18 @@ class App extends React.Component {
 		return (
 			<React.Fragment>
 				<NavBar />
-				{alert.message &&
-					<div className={`alert ${alert.type}`}>{alert.message}</div>
-				}
 				<Router history={history}>
 					<div className="page-content container">
+						{alert.message &&
+							<div className={`alert ${alert.type}`}>{alert.message}</div>
+						}
 						<PrivateRoute exact path="/" component={LogPage} />
 						<PrivateRoute path="/activity-log" component={LogPage} />
+						<Route path="/forgot-password" component={ForgotPasswordPage} />
 						<Route path="/login" component={LoginPage} />
+						<Route path="/reset-password" component={ResetPasswordPage} />
 						<Route path="/signup" component={SignupPage} />
+						<Route path="/verify" component={VerificationPage} />
 					</div>
 				</Router>
 			</React.Fragment>
