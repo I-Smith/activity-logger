@@ -11,11 +11,19 @@ class LogTableRow extends React.Component {
 		super(props);
 
 		this.handleDeleteEvent = this.handleDeleteEvent.bind(this);
+		this._formatDuration = this._formatDuration.bind(this);
 	}
 	
 	handleDeleteEvent(eventId) {
 		const { user} = this.props;
 		this.props.dispatch(userEventsActions.delete(user.id, eventId));
+	}
+
+	_formatDuration(duration) {
+		const hours = String(duration.hours || '0').padStart(2, '0'); 
+		const minutes = String(duration.minutes || '0').padStart(2, '0'); 
+		const seconds = String(duration.seconds || '0').padStart(2, '0'); 
+		return `${hours}:${minutes}:${seconds}`
 	}
 
 	render() {
@@ -34,11 +42,11 @@ class LogTableRow extends React.Component {
 		return (
 			<tr id={`event_${id}`}>
 				<td>{dayjs(date).format('MM/DD/YY')}</td>
-				<td>{challenge}</td>
-				<td>{distance}</td>
-				<td>{duration.hours || '00'}:{duration.minutes || '00'}:{duration.seconds || '00'}</td>
-				<td>{ruckWeight}</td>
-				<td>{couponWeight}</td>
+				<td>{challenge || '-'}</td>
+				<td>{distance || '-'}</td>
+				<td>{this._formatDuration(duration)}</td>
+				<td>{ruckWeight || '-'}</td>
+				<td>{couponWeight || '-'}</td>
 				<td>
 					<EventForm
 						buttonClassNames="btn-link text-dark Table-action"
