@@ -6,6 +6,7 @@ class NavBar extends React.Component {
 	}
 
 	render() {
+		const {user} = this.props;
 		return (
 			<nav className="navbar navbar-expand-md fixed-top Navbar-color">
 				<div className="container">
@@ -22,7 +23,7 @@ class NavBar extends React.Component {
 								<a className="nav-link text-monospace text-uppercase Navbar-link" href="/activity-log">ACTIVITY</a>
 							</li>
 							<li className="nav-item">
-								<a className="nav-link text-monospace text-uppercase Navbar-link" href="/login">{localStorage.getItem('user') ? 'Logout' : 'Login'}</a>
+								<a className="nav-link text-monospace text-uppercase Navbar-link" href="/login">{user ? 'Logout' : 'Login'}</a>
 							</li>
 						</ul>
 					</div>

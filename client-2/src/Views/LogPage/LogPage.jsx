@@ -71,7 +71,7 @@ class LogPage extends React.Component {
 									</tr>
 								</thead>
 								<tbody>
-									{userEvents.logEvents.map((event, index) => (
+									{_.map(_.sortBy(userEvents.logEvents, 'date').reverse(), (event, index) => (
 										<LogTableRow
 											event={event}
 											key={index}
