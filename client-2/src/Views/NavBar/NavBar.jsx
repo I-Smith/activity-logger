@@ -22,7 +22,7 @@ class NavBar extends React.Component {
 								<a className="nav-link text-monospace text-uppercase Navbar-link" href="/activity-log">ACTIVITY</a>
 							</li>
 							<li className="nav-item">
-								<a className="nav-link text-monospace text-uppercase Navbar-link" href="/login">Logout</a>
+								<a className="nav-link text-monospace text-uppercase Navbar-link" href="/login">{localStorage.getItem('user') ? 'Logout' : 'Login'}</a>
 							</li>
 						</ul>
 					</div>

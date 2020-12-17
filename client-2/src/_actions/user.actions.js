@@ -4,11 +4,51 @@ import { alertActions } from './';
 import { history } from '../_helpers';
 
 export const userActions = {
+	getAll,
+	forgotPassword,
     login,
 	logout,
 	register,
-    getAll
+	resetPassword,
+	verify,
 };
+
+function getAll() {
+    return dispatch => {
+        dispatch(request());
+
+        userService.getAll()
+            .then(
+                users => dispatch(success(users)),
+                error => dispatch(failure(error))
+            );
+    };
+
+    function request() { return { type: userConstants.GETALL_REQUEST } }
+    function success(users) { return { type: userConstants.GETALL_SUCCESS, users } }
+    function failure(error) { return { type: userConstants.GETALL_FAILURE, error } }
+}
+
+function forgotPassword(email) {
+    return dispatch => {
+        dispatch(request());
+
+        userService.forgotPassword(email)
+            .then(
+                response => { 
+                    dispatch(success(response));
+                },
+                error => {
+                    dispatch(failure());
+                    dispatch(alertActions.error(error));
+				}
+            );
+    };
+
+    function request() { return { type: userConstants.FORGOT_PASSWORD_REQUEST } }
+    function success(response) { return { type: userConstants.FORGOT_PASSWORD_SUCCESS, response } }
+    function failure(error) { return { type: userConstants.FORGOT_PASSWORD_FAILURE, error } }
+}
 
 function login(email, password) {
     return dispatch => {
@@ -44,7 +84,7 @@ function register(registerOptions) {
         userService.register(registerOptions)
             .then(
                 response => { 
-                    dispatch(success());
+                    dispatch(success(response));
                 },
                 error => {
                     dispatch(failure());
@@ -53,23 +93,51 @@ function register(registerOptions) {
             );
     };
 
-    function request(user) { return { type: userConstants.REGISTER_REQUEST, user } }
-    function success(user) { return { type: userConstants.REGISTER_SUCCESS, user } }
+    function request() { return { type: userConstants.REGISTER_REQUEST } }
+    function success(response) { return { type: userConstants.REGISTER_SUCCESS, response } }
     function failure(error) { return { type: userConstants.REGISTER_FAILURE, error } }
 }
 
-function getAll() {
+function resetPassword(resetPasswordOptions) {
     return dispatch => {
         dispatch(request());
 
-        userService.getAll()
+        userService.resetPassword(resetPasswordOptions)
             .then(
-                users => dispatch(success(users)),
-                error => dispatch(failure(error))
+                response => { 
+                    dispatch(success(response));
+					history.push('/login');
+					dispatch(alertActions.success(response.message));
+                },
+                error => {
+                    dispatch(failure(error));
+				}
             );
     };
 
-    function request() { return { type: userConstants.GETALL_REQUEST } }
-    function success(users) { return { type: userConstants.GETALL_SUCCESS, users } }
-    function failure(error) { return { type: userConstants.GETALL_FAILURE, error } }
+    function request() { return { type: userConstants.RESET_PASSWORD_REQUEST } }
+    function success(response) { return { type: userConstants.RESET_PASSWORD_SUCCESS, response } }
+    function failure(error) { return { type: userConstants.RESET_PASSWORD_FAILURE, error } }
+}
+
+function verify(token) {
+    return dispatch => {
+        dispatch(request());
+
+        userService.verify(token)
+            .then(
+                response => { 
+                    dispatch(success(response));
+					history.replace('/login');
+					dispatch(alertActions.success(response.message));
+                },
+                error => {
+                    dispatch(failure(error));
+				}
+            );
+    };
+
+    function request() { return { type: userConstants.VERIFY_REQUEST } }
+    function success(response) { return { type: userConstants.VERIFY_SUCCESS, response } }
+    function failure(error) { return { type: userConstants.VERIFY_FAILURE, error } }
 }

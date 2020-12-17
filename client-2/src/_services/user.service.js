@@ -2,11 +2,34 @@ import config from 'config';
 import { authHeader, handleResponse } from '../_helpers';
 
 export const userService = {
+	getAll,
+	forgotPassword,
     login,
 	logout,
 	register,
-    getAll
+	resetPassword,
+	verify,
 };
+
+function getAll() {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+    };
+
+    return fetch(`${config.apiUrl}/users`, requestOptions).then(handleResponse);
+}
+
+function forgotPassword(email) {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+    };
+
+    return fetch(`${config.apiUrl}/users/forgot-password`, requestOptions)
+        .then(handleResponse);
+}
 
 function login(email, password) {
     const requestOptions = {
@@ -41,11 +64,24 @@ function register(registerOptions) {
         .then(handleResponse);
 }
 
-function getAll() {
+function resetPassword(resetPasswordOptions) {
     const requestOptions = {
-        method: 'GET',
-        headers: authHeader()
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(resetPasswordOptions)
     };
 
-    return fetch(`${config.apiUrl}/users`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/users/reset-password`, requestOptions)
+		.then(handleResponse);
+}
+
+function verify(token) {
+	const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token }),
+	};
+	
+	return fetch(`${config.apiUrl}/users/verify-email`, requestOptions)
+		.then(handleResponse);
 }
