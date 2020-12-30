@@ -14,6 +14,7 @@ app.use(cookieParser());
 app.use(cors({ origin: (origin, callback) => callback(null, true), credentials: true }));
 
 // api routes
+app.use('/challenges', require('./challenges/challenges.controller'));
 app.use('/users', require('./users/users.controller'));
 app.use('/log-events', require('./log-events/logEvents.controller'));
 

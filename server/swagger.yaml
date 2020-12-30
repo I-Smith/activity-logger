@@ -1112,7 +1112,7 @@ paths:
       tags:
         - log-events
       description: Restricted to admin users.
-      operationId: createUser
+      operationId: createLogEvent
       security:
         - bearerAuth: []
       requestBody:
@@ -1427,6 +1427,204 @@ paths:
                   message:
                     type: string
                     example: "Log event deleted successfully"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+  /challenges:
+      get:
+        summary: Get a list of all challenges
+        tags:
+          - challenges
+        description: Restricted to authenticated users.
+        operationId: getAllChallenges
+        security:
+          - bearerAuth: []
+        responses:
+          "200":
+            description: An array of all challenges
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: "5eb12e197e06a76ccdefc121"
+                      name:
+                        type: string
+                        example: "Go Ruck January 2021"
+                      startDate:
+                        type: string
+                        example: "2021-01-01T00:00:00.000Z"
+                      endDate:
+                        type: string
+                        example: "2021-02-01T00:00:00.000Z"
+          "401":
+            $ref: "#/components/responses/UnauthorizedError"
+      post:
+        summary: Create a new challenge
+        tags:
+          - challenges
+        description: Restricted to admin users.
+        operationId: createChallenge
+        security:
+          - bearerAuth: []
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: "Go Ruck January 2021"
+                  startDate:
+                    type: string
+                    example: "2021-01-01T00:00:00.000Z"
+                  endDate:
+                    type: string
+                    example: "2021-02-01T00:00:00.000Z"
+                required:
+                  - name
+                  - startDate
+                  - endDate
+        responses:
+          "200":
+            description: Log event created successfully
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      example: "5eb12e197e06a76ccdefc121"
+                    name:
+                      type: string
+                      example: "Go Ruck January 2021"
+                    startDate:
+                      type: string
+                      example: "2021-01-01T00:00:00.000Z"
+                    endDate:
+                      type: string
+                      example: "2021-02-01T00:00:00.000Z"
+          "401":
+            $ref: "#/components/responses/UnauthorizedError"
+  /challenges/{challengeId}:
+    parameters:
+      - in: path
+        name: challengeId
+        description: Challenge id
+        required: true
+        example: "5eb12e197e06a76ccdefc121"
+        schema:
+          type: string
+    get:
+      summary: Get a single challenge by id
+      tags:
+        - challenges
+      description: Restricted to authenticated users
+      operationId: getChallengeById
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Details of the specified challenge
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: "5eb12e197e06a76ccdefc121"
+                  name:
+                    type: string
+                    example: "Go Ruck January 2021"
+                  startDate:
+                    type: string
+                    example: "2021-01-01T00:00:00.000Z"
+                  endDate:
+                    type: string
+                    example: "2021-02-01T00:00:00.000Z"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+    put:
+      summary: Update a challenge
+      tags:
+        - challenges
+      description: Restricted to admin users
+      operationId: updateChallenge
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  example: "5eb12e197e06a76ccdefc121"
+                name:
+                  type: string
+                  example: "Go Ruck January 2021"
+                startDate:
+                  type: string
+                  example: "2021-01-01T00:00:00.000Z"
+                endDate:
+                  type: string
+                  example: "2021-02-01T00:00:00.000Z"
+      responses:
+        "200":
+          description: Log event updated successfully. The details of the updated challenge are returned.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: "5eb12e197e06a76ccdefc121"
+                  name:
+                    type: string
+                    example: "Go Ruck January 2021"
+                  startDate:
+                    type: string
+                    example: "2021-01-01T00:00:00.000Z"
+                  endDate:
+                    type: string
+                    example: "2021-02-01T00:00:00.000Z"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+    delete:
+      summary: Delete a challenge
+      tags:
+        - challenges
+      description: Restricted to admin users
+      operationId: deleteChallenge
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Challenge deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Challenge deleted successfully"
         "404":
           $ref: "#/components/responses/NotFoundError"
         "401":
