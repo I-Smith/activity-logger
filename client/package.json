@@ -1,9 +1,9 @@
 {
-  "name": "react-redux-jwt-authentication-example",
+  "name": "activity-logger-client",
   "version": "1.0.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/cornflourblue/react-redux-jwt-authentication-example.git"
+    "url": "https://github.com/I-Smith/activity-logger/tree/master/client"
   },
   "license": "MIT",
   "scripts": {
