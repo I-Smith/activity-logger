@@ -33,7 +33,7 @@ class App extends React.Component {
 			<React.Fragment>
 				<NavBar />
 				<Router history={history}>
-					<div className="page-content container">
+					<div className="page-content container-lg">
 						{alert.message &&
 							<div className={`alert ${alert.type}`}>{alert.message}</div>
 						}

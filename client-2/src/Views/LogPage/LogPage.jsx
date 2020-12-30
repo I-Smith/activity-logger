@@ -38,8 +38,27 @@ class LogPage extends React.Component {
 			<React.Fragment>
 				<div className="mx-auto text-center">
 					<h3 className="">
-						Hello {user.firstName}, welcome to your activity chart!
+						Hello {user.firstName}. Welcome to your activity chart!
 					</h3>
+
+					<div className="jumbotron mt-4">
+						<h3 className="mt-0"><strong>Totals</strong></h3>
+						<div className="row">
+							<div className="col-6">
+								<h4><strong>Distance</strong></h4>
+
+							</div>
+							<div className="col-6">
+								<h4><strong>Duration</strong></h4>
+
+							</div>
+						</div>
+						<div className="row">
+							<div className="col-6 col-offset-3">
+								<h4><strong>Ruck Work</strong></h4>
+							</div>
+						</div>
+					</div>
 					<div className="mt-4">
 
 						<EventForm
@@ -58,7 +77,7 @@ class LogPage extends React.Component {
 						</div>
 
 						{_.size(userEvents.logEvents) > 0 ? (
-							<table className="table table-striped table-hover mt-2">
+							<table className="table table-responsive-lg table-striped table-hover mt-2">
 								<thead>
 									<tr>
 										<th scope="col">Date</th>

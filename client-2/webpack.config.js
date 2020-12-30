@@ -17,6 +17,8 @@ module.exports = {
         template: './src/index.html'
     })],
     devServer: {
+		// host: '0.0.0.0',
+		// port: 80,
         historyApiFallback: true
     },
     externals: {
