@@ -1,2 +1,0 @@
-export const LOG_EVENT = 'LOG_EVENT';
-export const LOG_EVENT_RESPONSE = 'LOG_EVENT_RESPONSE';
