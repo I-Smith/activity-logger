@@ -63,7 +63,7 @@ export function userEvents(state = initialState, { type, response, error }) {
 				...state,
 				deleting: false,
 				needsReload: true,
-				logEvents: _.reject(state.logEvents, { id: response.id }),
+				logEvents: _.reject(state.logEvents, { id: response.eventId }),
 			};
 		case userEventsConstants.DELETE_FAILURE:
 			return { 

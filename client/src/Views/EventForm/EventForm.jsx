@@ -13,6 +13,7 @@ class EventForm extends React.Component {
 		super(props);
 		this.state = {
 			challenge: '',
+			customChallenge: '',
 			couponWeight: '',
 			distance: '',
 			hours: '',
@@ -30,11 +31,13 @@ class EventForm extends React.Component {
 	}
 	
 	componentDidMount() {
-		const { eventId, event } = this.props;
+		const { challenges, eventId, event } = this.props;
 		const { challenge, date, activity = {} } = event;
 		if (eventId) {
+			const challengeName = _.get(_.find(challenges, { id: challenge }), 'name');
 			this.setState({
-				challenge,
+				challenge: challengeName ? challenge : 'Other',
+				customChallenge: challengeName ? '' : challenge,
 				couponWeight: activity && activity.couponWeight,
 				distance: activity && activity.distance,
 				hours: activity && activity.duration && activity.duration.hours,
@@ -51,6 +54,7 @@ class EventForm extends React.Component {
 		const { eventId, user } = this.props;
 		const {
 			challenge,
+			customChallenge,
 			couponWeight,
 			distance,
 			hours,
@@ -61,8 +65,8 @@ class EventForm extends React.Component {
 			startDate,
 		} = this.state;
 		const eventOptions = {
-			date: new Date(dayjs(startDate).format('YYYY-MM-DD')),
-			challenge: challenge || undefined,
+			date: dayjs(startDate).format('YYYY-MM-DD'),
+			challenge: challenge === 'Other' ? customChallenge : challenge,
 			activity: {
 				distance: distance || undefined,
 				duration: {
@@ -85,8 +89,10 @@ class EventForm extends React.Component {
 
 	handleChange(e) {
 		const { name, value } = e.target;
+		// console.log(`${name}: ${value}`);
 		this.setState({ [name]: value });
 	}
+
 	handleDateChange(date) {
 		this.setState({ startDate: date });
 	}
@@ -102,6 +108,7 @@ class EventForm extends React.Component {
 	render() {
 		const {
 			buttonClassNames,
+			challenges,
 			children,
 			eventId,
 			event,
@@ -109,6 +116,7 @@ class EventForm extends React.Component {
 		} = this.props;
 		const {
 			challenge,
+			customChallenge,
 			couponWeight,
 			distance,
 			hours,
@@ -153,9 +161,28 @@ class EventForm extends React.Component {
 										<label htmlFor="inputDate">Date</label>
 										<DatePicker id="inputDate" selected={startDate} onChange={date => this.handleDateChange(date)} />
 									</div>
-									<div className="form-group col-md-6">
-										<label htmlFor="challenge">Challenge</label>
-										<input type="text" className="form-control" name="challenge" value={challenge} onChange={this.handleChange} />
+									<div className="col">
+										<div className="form-row">
+											<div className="form-group col-md-6">
+												<label htmlFor="challenge">Challenge</label>
+												<select className="form-control" name="challenge" value={challenge} onChange={this.handleChange}>
+													<option value="">Select challenge...</option>
+													{_.map(challenges, (challenge) => (
+														<option 
+															key={`challenge_${challenge.id}`}
+															value={challenge.id}
+														>
+															{challenge.name}
+														</option>
+													))}
+													<option value="Other">Other</option>
+												</select>
+											</div>
+											<div className={`form-group col-md-5 ${challenge === 'Other' ? '' : 'd-none'}`}>
+												<label htmlFor="customChallenge">Challenge</label>
+												<input type="text" className="form-control" name="customChallenge" value={customChallenge} placeholder="Other..." onChange={this.handleChange} />
+											</div>
+										</div>
 									</div>
 									<div className="form-group col-md-6">
 										<label htmlFor="distance">Distance</label>
@@ -221,10 +248,11 @@ class EventForm extends React.Component {
 }
 
 function mapStateToProps(state, { eventId }) {
-	const { userEvents, authentication } = state;
-	const { user } = authentication;
-	const event = _.find(userEvents.logEvents, { id: eventId }) || {};
+	const { challenges } = state.challenges;
+	const { user } = state.authentication;
+	const event = _.find(state.userEvents.logEvents, { id: eventId }) || {};
 	return {
+		challenges,
 		event,
 		user,
 	};

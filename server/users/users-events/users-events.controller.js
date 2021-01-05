@@ -39,7 +39,7 @@ function getById(req, res, next) {
 
 function createSchema(req, res, next) {
     const schema = Joi.object({
-        date: Joi.date().required(),
+        date: Joi.string().required(),
         isWorkout: Joi.boolean(),
         challenge: Joi.string(),
         activity: Joi.object({
@@ -70,7 +70,7 @@ function create(req, res, next) {
 
 function updateSchema(req, res, next) {
     const schema = Joi.object({
-        date: Joi.date(),
+        date: Joi.string(),
         isWorkout: Joi.boolean(),
         challenge: Joi.string(),
         activity: Joi.object({

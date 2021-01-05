@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const schema = new Schema({
     userId: { type: String },
-	date: { type: Date, required: true },
+	date: { type: String, required: true },
 	isWorkout: { type: Boolean, default: false },
 	challenge: { type: String },
 	activity: {

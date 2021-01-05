@@ -30,8 +30,8 @@ function getById(req, res, next) {
 function createSchema(req, res, next) {
     const schema = Joi.object({
 		name: Joi.string().required(),
-		startDate: Joi.date().required(),
-		endDate: Joi.date().required(),
+		startDate: Joi.string().required(),
+		endDate: Joi.string().required(),
     });
     validateRequest(req, next, schema);
 }
@@ -45,8 +45,8 @@ function create(req, res, next) {
 function updateSchema(req, res, next) {
     const schema = Joi.object({
 		name: Joi.string(),
-		startDate: Joi.date(),
-		endDate: Joi.date(),
+		startDate: Joi.string(),
+		endDate: Joi.string(),
     });
     validateRequest(req, next, schema);
 }

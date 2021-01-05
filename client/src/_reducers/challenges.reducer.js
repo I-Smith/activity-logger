@@ -63,7 +63,7 @@ export function challenges(state = initialState, { type, response, error }) {
 				...state,
 				deleting: false,
 				needsReload: true,
-				challenges: _.reject(state.challenges, { id: response.id }),
+				challenges: _.reject(state.challenges, { id: response.challengeId }),
 			};
 		case challengesConstants.DELETE_FAILURE:
 			return { 

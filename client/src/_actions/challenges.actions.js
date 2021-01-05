@@ -1,7 +1,7 @@
 import { challengesConstants } from '../_constants';
 import { challengesService } from '../_services';
 
-export const userEventsActions = {
+export const challengesActions = {
 	getAll,
 	create,
 	delete: _delete,
@@ -46,7 +46,9 @@ function _delete(challengeId) {
 
         challengesService.delete(challengeId)
             .then(
-                response => dispatch(success(response)),
+                response => {
+					dispatch(success({ ...response, challengeId }))
+				},
                 error => dispatch(failure(error))
             );
     };

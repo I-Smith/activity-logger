@@ -4,8 +4,9 @@ import { connect } from 'react-redux';
 
 import { history } from '../_helpers';
 import { alertActions } from '../_actions';
-import { PrivateRoute } from '../_components';
+import { PrivateAdminRoute, PrivateRoute } from '../_components';
 import { HomePage } from '../Views/HomePage';
+import { AdminPage } from '../Views/AdminPage';
 import {
 	ForgotPasswordPage,
 	LoginPage,
@@ -39,6 +40,7 @@ class App extends React.Component {
 						}
 						<PrivateRoute exact path="/" component={LogPage} />
 						<PrivateRoute path="/activity-log" component={LogPage} />
+						<PrivateAdminRoute path="/admin" component={AdminPage} />
 						<Route path="/forgot-password" component={ForgotPasswordPage} />
 						<Route path="/login" component={LoginPage} />
 						<Route path="/reset-password" component={ResetPasswordPage} />

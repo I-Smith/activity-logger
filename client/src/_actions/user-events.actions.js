@@ -48,7 +48,7 @@ function _delete(userId, eventId) {
 
         userEventsService.delete(userId, eventId)
             .then(
-                response => dispatch(success(response)),
+                response => dispatch(success({ ...response, eventId })),
                 error => dispatch(failure(error))
             );
     };
