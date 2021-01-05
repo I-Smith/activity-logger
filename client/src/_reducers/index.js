@@ -1,17 +1,19 @@
 import { combineReducers } from 'redux';
 
 import { alert } from './alert.reducer';
-import { authentication } from './authentication.reducer';
-import { forgotPassword } from './forgotPassword.reducer';
-import { registration } from './registation.reducer';
-import { resetPassword } from './resetPassword.reducer';
+import { authentication } from './auth/authentication.reducer';
+import { forgotPassword } from './auth/forgotPassword.reducer';
+import { registration } from './auth/registation.reducer';
+import { resetPassword } from './auth/resetPassword.reducer';
+import { verification } from './auth/verification.reducer';
+import { challenges } from './challenges.reducer';
 import { userEvents } from './user-events.reducer';
 import { users } from './users.reducer';
-import { verification } from './verification.reducer';
 
 const rootReducer = combineReducers({
 	alert,
 	authentication,
+	challenges,
 	forgotPassword,
 	registration,
 	resetPassword,

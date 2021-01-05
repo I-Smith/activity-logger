@@ -5,6 +5,7 @@ mongoose.connect(process.env.MONGODB_URI || config.connectionString, connectionO
 mongoose.Promise = global.Promise;
 
 module.exports = {
+	Challenge: require('challenges/challenge.model'),
 	User: require('users/user.model'),
 	LogEvent: require('log-events/logEvent.model'),
     RefreshToken: require('users/refresh-token.model'),

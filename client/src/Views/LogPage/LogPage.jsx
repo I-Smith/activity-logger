@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { EventForm } from '../EventForm';
 import { LogTableRow } from './LogTableRow';
 
-import { userEventsActions } from '../../_actions';
+import { challengesActions, userEventsActions } from '../../_actions';
 
 class LogPage extends React.Component {
 	constructor(props) {
@@ -17,6 +17,7 @@ class LogPage extends React.Component {
 	componentDidMount() {
 		const { user } = this.props;
 		this.props.dispatch(userEventsActions.getAll(user.id));
+		this.props.dispatch(challengesActions.getAll());
 	}
 
 	componentDidUpdate(prevProps) {
@@ -33,7 +34,7 @@ class LogPage extends React.Component {
 	}
 
 	render() {
-		const { user, userEvents, location } = this.props;
+		const { challengesLoading, user, userEvents, location } = this.props;
 		return (
 			<React.Fragment>
 				<div className="mx-auto text-center">
@@ -60,12 +61,17 @@ class LogPage extends React.Component {
 						</div>
 					</div>
 					<div className="mt-4">
-
-						<EventForm
-							buttonClassNames="btn-success"
-						>
-							Add New Event
-						</EventForm>
+						{challengesLoading ? (
+							<div className="spinner-border spinner-border-sm text-light ml-2" role="status">
+								<span className="sr-only">Loading...</span>
+							</div>
+						) : (
+							<EventForm
+								buttonClassNames="btn-success"
+							>
+								Add New Event
+							</EventForm>
+						)}
 						<div className="mt-2">
 							{userEvents.loading && (
 								<div className="spinner-border text-secondary" role="status">
@@ -109,9 +115,10 @@ class LogPage extends React.Component {
 }
 
 function mapStateToProps(state) {
-	const { userEvents, authentication } = state;
+	const { challenges, userEvents, authentication } = state;
 	const { user } = authentication;
 	return {
+		challengesLoading: challenges.loading,
 		user,
 		userEvents,
 	};

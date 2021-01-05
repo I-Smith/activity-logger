@@ -1,7 +1,7 @@
 # activity-logger-api
 
 API with Email Sign Up, Verification, Authentication & Forgot Password
-
+Contains API for Users, Log Events, and Challenges.
 ## Instructions
 - Copy example-config.json into a new config.json file and update values.
 - Run `npm install`

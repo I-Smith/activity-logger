@@ -19,6 +19,11 @@ class NavBar extends React.Component {
 
 					<div className="collapse navbar-collapse" id="headerNavbar">
 						<ul className="navbar-nav ml-md-auto">
+							{user && user.role === 'Admin' && (
+								<li className="nav-item">
+									<a className="nav-link text-monospace text-uppercase Navbar-link" href="/admin">ADMIN</a>
+								</li>
+							)}
 							<li className="nav-item">
 								<a className="nav-link text-monospace text-uppercase Navbar-link" href="/activity-log">ACTIVITY</a>
 							</li>
