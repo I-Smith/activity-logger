@@ -29,7 +29,7 @@ class ForgotPasswordPage extends React.Component {
 		const { email } = this.state;
 		const { dispatch } = this.props;
 		if (email) {
-			dispatch(userActions.forgotPassword(email));
+			dispatch(userActions.forgotPassword(email.toLowerCase()));
 		}
 	}
 

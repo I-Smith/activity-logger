@@ -58,12 +58,12 @@ async function refreshToken({ token, ipAddress }) {
     await newRefreshToken.save();
 
     // generate new jwt
-    const token = generateJwtToken(user);
+    const jwtToken = generateJwtToken(user);
 
     // return basic details and tokens
     return {
         ...basicDetails(user),
-        token,
+        token: jwtToken,
         refreshToken: newRefreshToken.token
     };
 }
