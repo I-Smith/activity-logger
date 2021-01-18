@@ -166,7 +166,9 @@ class EventForm extends React.Component {
 								<form>
 									<div className="form-group col-md-6">
 										<label htmlFor="inputDate">Date</label>
-										<DatePicker id="inputDate" selected={startDate} onChange={date => this.handleDateChange(date)} />
+										<div className="row">
+											<DatePicker className="ml-3" id="inputDate" selected={startDate} onChange={date => this.handleDateChange(date)} />
+										</div>
 									</div>
 									<div className="col">
 										<label htmlFor="challenge">Challenge</label>

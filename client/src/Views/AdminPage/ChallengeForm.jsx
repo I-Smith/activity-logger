@@ -8,32 +8,23 @@ import DatePicker from "react-datepicker";
 import { challengesActions } from '../../_actions';
 import "react-datepicker/dist/react-datepicker.css";
 
+const initialFormState = {
+	name: '',
+	formStartDate: Date.now(),
+	formEndDate: Date.now(),
+};
+
 class ChallengeForm extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			...initialFormState,
 			isOpen: false,
-			name: '',
-			formStartDate: Date.now(),
-			formEndDate: Date.now(),
 		};
 		this.handleCreateUpdateEvent = this.handleCreateUpdateEvent.bind(this);
 		this.handleChange = this.handleChange.bind(this);
 		this.handleClose = this.handleClose.bind(this);
 		this.handleOpen = this.handleOpen.bind(this);
-	}
-	
-	componentDidMount() {
-		const { challengeId, challenge } = this.props;
-		const { name, startDate, endDate } = challenge;
-		console.log(JSON.stringify(challenge));
-		if (challengeId) {
-			this.setState({
-				name,
-				formStartDate: new Date(dayjs(startDate).format('MM/DD/YY')),
-				formEndDate:  new Date(dayjs(endDate).format('MM/DD/YY')),
-			});
-		}
 	}
 
 	handleCreateUpdateEvent() {
@@ -73,7 +64,21 @@ class ChallengeForm extends React.Component {
 	}
 
 	handleOpen() {
-		this.setState({ isOpen: true });
+		const { challengeId, challenge } = this.props;
+		const { name, startDate, endDate } = challenge;
+		if (challengeId) {
+			this.setState({
+				isOpen: true,
+				name,
+				formStartDate: new Date(dayjs(startDate).format('MM/DD/YY')),
+				formEndDate:  new Date(dayjs(endDate).format('MM/DD/YY')),
+			});
+		} else {
+			this.setState({
+				...initialFormState,
+				isOpen: true,
+			})
+		}
 	}
 
 	render() {
@@ -120,20 +125,24 @@ class ChallengeForm extends React.Component {
 							</div>
 							<div className="modal-body">
 								<form>
-									<div className="form-group col-md-6">
+									<div className="mt-2 form-group col-md-6">
 										<label htmlFor="distance">Challenge Name</label>
 										<input type="text" className="form-control" name="name" value={name} placeholder="January Challenge" onChange={this.handleChange} />
 									</div>
-									<div className="form-group col-md-6">
+									<div className="mt-4 form-group col-md-6">
 										<label htmlFor="startDate">Start Date</label>
-										<DatePicker id="startDate" selected={formStartDate} onChange={date => this.handleStartDateChange(date)} />
+										<div className="row">
+											<DatePicker className="ml-3" id="startDate" selected={formStartDate} onChange={date => this.handleStartDateChange(date)} />
+										</div>
 									</div>
-									<div className="form-group col-md-6">
+									<div className="mt-4 form-group col-md-6">
 										<label htmlFor="endDate">End Date</label>
-										<DatePicker id="endDate" selected={formEndDate} onChange={date => this.handleEndDateChange(date)} />
+										<div className="row">
+											<DatePicker className="ml-3" id="endDate" selected={formEndDate} onChange={date => this.handleEndDateChange(date)} />
+										</div>	
 									</div>
 								</form>
-								<div className="mt-4 col-md-8">
+								<div className="mt-5 col-md-8">
 									<button
 										type="button"
 										className="btn btn-primary mr-2"
