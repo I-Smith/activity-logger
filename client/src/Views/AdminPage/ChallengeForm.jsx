@@ -129,7 +129,7 @@ class ChallengeForm extends React.Component {
 										<DatePicker id="startDate" selected={formStartDate} onChange={date => this.handleStartDateChange(date)} />
 									</div>
 									<div className="form-group col-md-6">
-										<label htmlFor="endDate">Start Date</label>
+										<label htmlFor="endDate">End Date</label>
 										<DatePicker id="endDate" selected={formEndDate} onChange={date => this.handleEndDateChange(date)} />
 									</div>
 								</form>
