@@ -8,21 +8,25 @@ import DatePicker from "react-datepicker";
 import { userEventsActions } from '../../_actions';
 import "react-datepicker/dist/react-datepicker.css";
 
+const initialFormState = {
+	challenge: '',
+	customChallenge: '',
+	couponWeight: '',
+	distance: '',
+	hours: '',
+	minutes: '',
+	notes: '',
+	ruckWeight: '',
+	seconds: '',
+	startDate: Date.now(),
+};
+
 class EventForm extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			challenge: '',
-			customChallenge: '',
-			couponWeight: '',
-			distance: '',
-			hours: '',
+			...initialFormState,
 			isOpen: false,
-			minutes: '',
-			notes: '',
-			ruckWeight: '',
-			seconds: '',
-			startDate: Date.now(),
 		};
 		this.handleCreateUpdateEvent = this.handleCreateUpdateEvent.bind(this);
 		this.handleChange = this.handleChange.bind(this);
@@ -30,25 +34,6 @@ class EventForm extends React.Component {
 		this.handleOpen = this.handleOpen.bind(this);
 	}
 	
-	componentDidMount() {
-		const { challenges, eventId, event } = this.props;
-		const { challenge, date, activity = {} } = event;
-		if (eventId) {
-			const challengeName = _.get(_.find(challenges, { id: challenge }), 'name');
-			this.setState({
-				challenge: challengeName ? challenge : 'Other',
-				customChallenge: challengeName ? '' : challenge,
-				couponWeight: activity && activity.couponWeight,
-				distance: activity && activity.distance,
-				hours: activity && activity.duration && activity.duration.hours,
-				minutes: activity && activity.duration && activity.duration.minutes,
-				notes: activity && activity.notes,
-				ruckWeight: activity.ruckWeight,
-				seconds: activity && activity.duration && activity.duration.seconds,
-				startDate: new Date(dayjs(date).format('MM/DD/YY')),
-			});
-		}
-	}
 
 	handleCreateUpdateEvent() {
 		const { eventId, user } = this.props;
@@ -102,7 +87,29 @@ class EventForm extends React.Component {
 	}
 
 	handleOpen() {
-		this.setState({ isOpen: true });
+		const { challenges, eventId, event } = this.props;
+		const { challenge, date, activity = {} } = event;
+		if (eventId) {
+			const challengeName = _.get(_.find(challenges, { id: challenge }), 'name');
+			this.setState({
+				isOpen: true,
+				challenge: challengeName ? challenge : 'Other',
+				customChallenge: challengeName ? '' : challenge,
+				couponWeight: activity && activity.couponWeight,
+				distance: activity && activity.distance,
+				hours: activity && activity.duration && activity.duration.hours,
+				minutes: activity && activity.duration && activity.duration.minutes,
+				notes: activity && activity.notes,
+				ruckWeight: activity.ruckWeight,
+				seconds: activity && activity.duration && activity.duration.seconds,
+				startDate: new Date(dayjs(date).format('MM/DD/YY')),
+			});
+		} else {
+			this.setState({
+				...initialFormState,
+				isOpen: true,
+			});
+		}
 	}
 
 	render() {
@@ -162,9 +169,9 @@ class EventForm extends React.Component {
 										<DatePicker id="inputDate" selected={startDate} onChange={date => this.handleDateChange(date)} />
 									</div>
 									<div className="col">
+										<label htmlFor="challenge">Challenge</label>
 										<div className="form-row">
 											<div className="form-group col-md-6">
-												<label htmlFor="challenge">Challenge</label>
 												<select className="form-control" name="challenge" value={challenge} onChange={this.handleChange}>
 													<option value="">Select challenge...</option>
 													{_.map(challenges, (challenge) => (
@@ -175,32 +182,32 @@ class EventForm extends React.Component {
 															{challenge.name}
 														</option>
 													))}
-													<option value="Other">Other</option>
+													<option value="Other">Other...</option>
 												</select>
+
 											</div>
 											<div className={`form-group col-md-5 ${challenge === 'Other' ? '' : 'd-none'}`}>
-												<label htmlFor="customChallenge">Challenge</label>
-												<input type="text" className="form-control" name="customChallenge" value={customChallenge} placeholder="Other..." onChange={this.handleChange} />
+												<input type="text" className="form-control" name="customChallenge" value={customChallenge} placeholder="My Challenge" onChange={this.handleChange} />
 											</div>
 										</div>
 									</div>
 									<div className="form-group col-md-6">
 										<label htmlFor="distance">Distance</label>
-										<input type="text" className="form-control" name="distance" value={distance} placeholder="3.5" onChange={this.handleChange} />
+										<input type="text" className="form-control" name="distance" value={distance} placeholder="miles" onChange={this.handleChange} />
 									</div>
 									<div className="col">
 										<label htmlFor="">Duration</label>
 										<div className="form-row">
 											<div className="form-group col-md-2">
-												<input type="text" className="form-control" name="hours" value={hours} placeholder="01" onChange={this.handleChange} />
+												<input type="text" className="form-control" name="hours" value={hours} placeholder="hh" onChange={this.handleChange} />
 												<label htmlFor="hours">Hours</label>
 											</div>
 											<div className="form-group col-md-2">
-												<input type="text" className="form-control" name="minutes" value={minutes} placeholder="23" onChange={this.handleChange} />
+												<input type="text" className="form-control" name="minutes" value={minutes} placeholder="mm" onChange={this.handleChange} />
 												<label htmlFor="minutes">Minutes</label>
 											</div>
 											<div className="form-group col-md-2">
-												<input type="text" className="form-control" name="seconds" value={seconds} placeholder="45" onChange={this.handleChange} />
+												<input type="text" className="form-control" name="seconds" value={seconds} placeholder="ss" onChange={this.handleChange} />
 												<label htmlFor="seconds">Seconds</label>
 											</div>
 										</div>
@@ -209,11 +216,11 @@ class EventForm extends React.Component {
 										<div className="form-row">
 											<div className="form-group col-md-4">
 												<label htmlFor="ruckWeight">Ruck</label>
-												<input type="text" className="form-control" name="ruckWeight" value={ruckWeight} placeholder="30" onChange={this.handleChange} />
+												<input type="text" className="form-control" name="ruckWeight" value={ruckWeight} placeholder="lbs" onChange={this.handleChange} />
 											</div>
 											<div className="form-group col-md-4">
 												<label htmlFor="couponWeight">Coupon</label>
-												<input type="text" className="form-control" name="couponWeight" value={couponWeight} placeholder="40" onChange={this.handleChange} />
+												<input type="text" className="form-control" name="couponWeight" value={couponWeight} placeholder="lbs" onChange={this.handleChange} />
 											</div>
 										</div>
 									</div>

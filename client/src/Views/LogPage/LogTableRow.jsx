@@ -10,6 +10,7 @@ class LogTableRow extends React.Component {
 	constructor(props) {
 		super(props);
 
+		this._getRuckWork = this._getRuckWork.bind(this);
 		this.handleDeleteEvent = this.handleDeleteEvent.bind(this);
 		this._formatDuration = this._formatDuration.bind(this);
 	}
@@ -26,6 +27,12 @@ class LogTableRow extends React.Component {
 		return `${hours}:${minutes}:${seconds}`
 	}
 
+	_getRuckWork(distance, ruckWeight, couponWeight) {
+		const dist = distance ? parseFloat(distance) : 0;
+		const ruck = ruckWeight ? parseFloat(ruckWeight) : 0;
+		const coupon = couponWeight ? parseFloat(couponWeight) : 0
+		return _.round((4.44 * (ruck + coupon) * dist));
+	}
 	render() {
 		const { challenges, challengesLoading, event } = this.props;
 		const {
@@ -48,6 +55,7 @@ class LogTableRow extends React.Component {
 				<td>{this._formatDuration(duration)}</td>
 				<td>{ruckWeight || '-'}</td>
 				<td>{couponWeight || '-'}</td>
+				<td>{this._getRuckWork(distance, ruckWeight, couponWeight)}</td>
 				<td>
 
 					{challengesLoading ?(

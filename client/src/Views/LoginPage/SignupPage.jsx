@@ -55,7 +55,7 @@ class SignupPage extends React.Component {
 			dispatch(userActions.register({
 				firstName,
 				lastName,
-				email,
+				email: email.toLowerCase(),
 				password,
 				confirmPassword,
 				acceptTerms: true,

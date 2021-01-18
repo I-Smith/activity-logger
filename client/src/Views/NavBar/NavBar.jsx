@@ -11,7 +11,7 @@ class NavBar extends React.Component {
 			<nav className="navbar navbar-expand-md fixed-top Navbar-color">
 				<div className="container">
 					<a className="navbar-brand" href="https://www.rucksonparade.com/">
-						<img className="Navbar-logo" src="https://static1.squarespace.com/static/5d364f576448090001058d3a/t/5f873d529784e33ac697a017/1606319014984/?format=1500w" alt="Rucks On Parade"/>
+						<img className="Navbar-logo" src="../../../public/RUCKS ON PARADE logo.png" alt="Rucks On Parade"/>
 					</a>
 					<button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#headerNavbar" aria-controls="headerNavbar" aria-expanded="false" aria-label="Toggle navigation">
 						<span className="navbar-toggler-icon"></span>
