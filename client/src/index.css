@@ -1,9 +1,14 @@
 html, body, #app {
 	height: 100%;
-  }
+}
+
+#app {
+	min-height: 100%;
+}
 
 .page-content {
 	height: 100%;
+	overflow: auto;
 	padding: 10rem 1.5rem;
 }
 
@@ -26,6 +31,12 @@ html, body, #app {
 .Navbar-logo {
 	max-width: 211px;
 }
+.Navbar-Menu-Wrapper {
+	display: flex;
+}
+.Sidebar-wrapper {
+	display: none;
+}
 .Table-action:hover .Delete {
 	color: #dc3545;
 }
@@ -37,6 +48,19 @@ html, body, #app {
 	display: inline;
 }
 
+@media only screen and (max-width: 768px) {
+	.Navbar-link {
+		color: #ededed;
+	}
+	.Navbar-Menu-Wrapper {
+		display: none;
+	}
+	.Sidebar-wrapper {
+		display: flex;
+	}
+  }
+
+/******* Tooltip stles *******/
 .Tooltip {
 	position: relative;
 	display: inline;
@@ -79,6 +103,7 @@ html, body, #app {
 }
 
 
+/******* ReactModal styles *******/
 .ReactModal__Html--open,
 .ReactModal__Body--open {
 	overflow: hidden;
@@ -95,7 +120,7 @@ html, body, #app {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	}
+}
 
 .ReactModal__Content {
 	top: 0;

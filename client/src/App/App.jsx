@@ -16,6 +16,7 @@ import {
 } from '../Views/LoginPage';
 import { LogPage } from '../Views/LogPage';
 import { NavBar } from '../Views/NavBar';
+import { FooterNav } from '../Views/Footer';
 
 class App extends React.Component {
 	constructor(props) {
@@ -34,7 +35,7 @@ class App extends React.Component {
 			<React.Fragment>
 				<NavBar />
 				<Router history={history}>
-					<div className="page-content container-lg">
+					<div id="page-wrap" className="page-content container-lg">
 						{alert.message &&
 							<div className={`alert ${alert.type}`}>{alert.message}</div>
 						}
@@ -48,6 +49,7 @@ class App extends React.Component {
 						<Route path="/verify" component={VerificationPage} />
 					</div>
 				</Router>
+				{/* <FooterNav /> */}
 			</React.Fragment>
 		);
 	}

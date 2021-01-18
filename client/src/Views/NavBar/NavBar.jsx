@@ -1,10 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { SideBar } from './SideBar';
+import { MenuItems } from './MenuItems';
 
 class NavBar extends React.Component {
-	componentDidMount() {
-	}
-
 	render() {
 		const {user} = this.props;
 		return (
@@ -13,24 +12,12 @@ class NavBar extends React.Component {
 					<a className="navbar-brand" href="https://www.rucksonparade.com/">
 						<img className="Navbar-logo" src="../../../public/RUCKS ON PARADE logo.png" alt="Rucks On Parade"/>
 					</a>
-					<button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#headerNavbar" aria-controls="headerNavbar" aria-expanded="false" aria-label="Toggle navigation">
-						<span className="navbar-toggler-icon"></span>
-					</button>
 
-					<div className="collapse navbar-collapse" id="headerNavbar">
-						<ul className="navbar-nav ml-md-auto">
-							{user && user.role === 'Admin' && (
-								<li className="nav-item">
-									<a className="nav-link text-monospace text-uppercase Navbar-link" href="/admin">ADMIN</a>
-								</li>
-							)}
-							<li className="nav-item">
-								<a className="nav-link text-monospace text-uppercase Navbar-link" href="/activity-log">ACTIVITY</a>
-							</li>
-							<li className="nav-item">
-								<a className="nav-link text-monospace text-uppercase Navbar-link" href="/login">{user ? 'Logout' : 'Login'}</a>
-							</li>
-						</ul>
+					<div className="Navbar-Menu-Wrapper">
+						<MenuItems />
+					</div>
+					<div className="Sidebar-wrapper">
+						<SideBar pageWrapId={'page-wrap'} outerContainerId={'app'} />
 					</div>
 				</div>
 			</nav>

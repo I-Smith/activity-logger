@@ -49,11 +49,11 @@ class LogPage extends React.Component {
 		let totalWork = 0;
 	
 		_.forEach(userEvents.logEvents, (event) => {
-			const distance = parseInt(_.get(event, 'activity.distance', 0));
-			const seconds = parseInt(_.get(event, 'activity.duration.seconds', 0));
-			const minutes = parseInt(_.get(event, 'activity.duration.minutes', 0)) + (seconds / 60);
-			const hours = parseInt(_.get(event, 'activity.duration.hours', 0)) + (minutes / 60);
-			const weight = parseInt(_.get(event, 'activity.ruckWeight', 0)) + parseInt(_.get(event, 'activity.couponWeight', 0));
+			const distance = parseFloat(_.get(event, 'activity.distance', 0));
+			const seconds = parseFloat(_.get(event, 'activity.duration.seconds', 0));
+			const minutes = parseFloat(_.get(event, 'activity.duration.minutes', 0)) + (seconds / 60);
+			const hours = parseFloat(_.get(event, 'activity.duration.hours', 0)) + (minutes / 60);
+			const weight = parseFloat(_.get(event, 'activity.ruckWeight', 0)) + parseFloat(_.get(event, 'activity.couponWeight', 0));
 			
 			totalDistance += distance;
 			totalDuration += hours;

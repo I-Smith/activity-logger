@@ -51,7 +51,7 @@ class LogTableRow extends React.Component {
 			<tr id={`event_${id}`}>
 				<td>{dayjs(date).format('MM/DD/YY')}</td>
 				<td>{challengeName || '-'}</td>
-				<td>{distance || '-'}</td>
+				<td>{_.round(distance, 2) || '-'}</td>
 				<td>{this._formatDuration(duration)}</td>
 				<td>{ruckWeight || '-'}</td>
 				<td>{couponWeight || '-'}</td>
