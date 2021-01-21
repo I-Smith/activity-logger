@@ -44,7 +44,10 @@ class LogPage extends React.Component {
 		const { userEvents } = this.props;
 
 		let totalDistance = 0;
-		let totalDuration = 0;
+		let totalSeconds = 0;
+		let totalMinutes = 0;
+		let totalHours = 0;
+		// let totalDuration = 0;
 		let totalWeight = 0
 		let totalWork = 0;
 	
@@ -56,18 +59,27 @@ class LogPage extends React.Component {
 			const weight = parseFloat(_.get(event, 'activity.ruckWeight', 0)) + parseFloat(_.get(event, 'activity.couponWeight', 0));
 			
 			totalDistance += distance;
-			totalDuration += hours;
+			totalSeconds += seconds;
+			totalMinutes += minutes;
+			totalHours += hours
+			// totalDuration += (hours + ((minutes + (seconds / 60)) / 60));
 			totalWeight += weight;
 			totalWork += (4.44 * weight * distance);
 			
 		});
 		totalDistance = _.round(totalDistance, 2);
-		totalDuration = _.round(totalDuration, 2);
+		totalSeconds = String(_.round(totalSeconds) || '00').padStart(2, '0')
+		totalMinutes = String(_.round(totalMinutes) || '00').padStart(2, '0')
+		totalHours = String(_.round(totalHours) || '00').padStart(2, '0')
+		// totalDuration = _.round(totalDuration, 2);
 		totalWork = _.round(totalWork);
 
 		return {
 			totalDistance,
-			totalDuration,
+			totalSeconds,
+			totalMinutes,
+			totalHours,
+			// totalDuration,
 			totalWeight,
 			totalWork,
 		}
@@ -78,7 +90,10 @@ class LogPage extends React.Component {
 		const { challengesLoading, user, userEvents, location } = this.props;
 		const {
 			totalDistance,
-			totalDuration,
+			totalSeconds,
+			totalMinutes,
+			totalHours,
+			// totalDuration,
 			totalWeight,
 			totalWork,
 		} = this._getTotals();
@@ -100,11 +115,11 @@ class LogPage extends React.Component {
 							</div>
 							<div className="col-md-4 mt-2">
 								<h4><strong>Duration</strong></h4>
-								<h4>{totalDuration} hours</h4>
+								<h4>{totalHours}:{totalMinutes}:{totalSeconds}</h4>
 							</div>
 
 							<div className="col-md-4 mt-2">
-								<h4><strong>Ruck Work</strong>
+								<h4><strong>RuckWork</strong>
 									<p className="Tooltip"> &#x24D8;
 										<span className="tooltiptext">Your "RuckWork" is calculated based on weight carried over distance</span>
 									</p>
