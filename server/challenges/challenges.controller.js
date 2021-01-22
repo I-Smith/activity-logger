@@ -9,6 +9,7 @@ const challengeService = require('./challenge.service');
 // routes
 router.get('/', authorize(), getAll);
 router.get('/:challengeId', authorize(), getById);
+router.get('/:challengeId/report', /*authorize(Role.Admin), */getReport);
 router.post('/', authorize(Role.Admin), createSchema, create);
 router.put('/:challengeId', authorize(Role.Admin), updateSchema, update);
 router.delete('/:challengeId', authorize(Role.Admin), _delete);
@@ -25,6 +26,12 @@ function getById(req, res, next) {
     challengeService.getById(req.params.challengeId)
         .then(challenge => challenge ? res.json(challenge) : res.sendStatus(404))
         .catch(next);
+}
+
+function getReport(req, res, next) {
+	challengeService.getReport(req.params.challengeId)
+		.then(report => true ? res.json(report) : res.sendStatus(404))
+		.catch(next);
 }
 
 function createSchema(req, res, next) {
