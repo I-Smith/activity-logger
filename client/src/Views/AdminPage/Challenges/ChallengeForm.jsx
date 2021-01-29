@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import Modal from 'react-modal';
 import DatePicker from "react-datepicker";
 
-import { challengesActions } from '../../_actions';
+import { challengesActions } from '../../../_actions';
 import "react-datepicker/dist/react-datepicker.css";
 
 const initialFormState = {

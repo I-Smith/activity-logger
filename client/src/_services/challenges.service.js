@@ -3,6 +3,7 @@ import { authHeader, handleResponse } from '../_helpers';
 
 export const challengesService = {
 	getAll,
+	getReport,
 	create,
 	delete: _delete,
 	edit,
@@ -49,4 +50,12 @@ function edit(challengeId, challengeOptions) {
 	};
 
     return fetch(`${config.apiUrl}/challenges/${challengeId}`, requestOptions).then(handleResponse);
+}
+
+function getReport(challengeId) {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+	};
+    return fetch(`${config.apiUrl}/challenges/${challengeId}/report`, requestOptions).then(handleResponse);
 }

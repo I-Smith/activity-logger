@@ -12,11 +12,13 @@ html, body, #app {
 	overflow: visible;
 	/* padding: 10rem 1.5rem; */
 }
+#page-wrap {
+	min-height: 60vh;
+}
 
 .Footer {
 	margin-top: 5rem;
 	border-top: medium solid #eeeeee;
-	/* height: 10vh; */
 	bottom: 0;
 	/* background: #ededed; */
 }

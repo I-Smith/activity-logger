@@ -4,7 +4,8 @@ module.exports = {
     mode: 'development',
     resolve: {
         extensions: ['.js', '.jsx', '.json', '.css', '.scss']
-    },
+	},
+	devtool: 'source-map',
     module: {
         rules: [
             { test: /\.jsx?$/, loader: 'babel-loader' },

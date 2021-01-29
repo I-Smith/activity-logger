@@ -6,12 +6,12 @@ import { EventForm } from '../EventForm';
 import { LogTableRow } from './LogTableRow';
 
 import { challengesActions, userEventsActions } from '../../_actions';
+import { getEventsTotals } from '../../util/event.util';
 
 class LogPage extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this._getEventFieldSum = this._getEventFieldSum.bind(this);
 		this._getTotals = this._getTotals.bind(this);
 		this.handleDeleteEvent = this.handleDeleteEvent.bind(this);
 	}
@@ -28,62 +28,15 @@ class LogPage extends React.Component {
 			this.props.dispatch(userEventsActions.getAll(user.id));
 		}
 	}
-
 	
 	handleDeleteEvent(eventId) {
 		const { user} = this.props;
 		this.props.dispatch(userEventsActions.delete(user.id, eventId));
 	}
 
-	_getEventFieldSum(eventField) {
-		const { userEvents } = this.props;
-		return _.sum(_.map(userEvents.logEvents, (event) => parseInt(_.get(event, eventField, 0))))
-	}
-
 	_getTotals() {
 		const { userEvents } = this.props;
-
-		let totalDistance = 0;
-		let totalSeconds = 0;
-		let totalMinutes = 0;
-		let totalHours = 0;
-		// let totalDuration = 0;
-		let totalWeight = 0
-		let totalWork = 0;
-	
-		_.forEach(userEvents.logEvents, (event) => {
-			const distance = parseFloat(_.get(event, 'activity.distance', 0));
-			const seconds = parseFloat(_.get(event, 'activity.duration.seconds', 0));
-			const minutes = parseFloat(_.get(event, 'activity.duration.minutes', 0)) + (seconds / 60);
-			const hours = parseFloat(_.get(event, 'activity.duration.hours', 0)) + (minutes / 60);
-			const weight = parseFloat(_.get(event, 'activity.ruckWeight', 0)) + parseFloat(_.get(event, 'activity.couponWeight', 0));
-			
-			totalDistance += distance;
-			totalSeconds += seconds;
-			totalMinutes += minutes;
-			totalHours += hours
-			// totalDuration += (hours + ((minutes + (seconds / 60)) / 60));
-			totalWeight += weight;
-			totalWork += (4.44 * weight * distance);
-			
-		});
-		totalDistance = _.round(totalDistance, 2);
-		totalSeconds = String(_.round(totalSeconds) || '00').padStart(2, '0')
-		totalMinutes = String(_.round(totalMinutes) || '00').padStart(2, '0')
-		totalHours = String(_.round(totalHours) || '00').padStart(2, '0')
-		// totalDuration = _.round(totalDuration, 2);
-		totalWork = _.round(totalWork);
-
-		return {
-			totalDistance,
-			totalSeconds,
-			totalMinutes,
-			totalHours,
-			// totalDuration,
-			totalWeight,
-			totalWork,
-		}
-
+		return getTotals(userEvents.logEvents);
 	}
 
 	render() {
@@ -96,7 +49,8 @@ class LogPage extends React.Component {
 			// totalDuration,
 			totalWeight,
 			totalWork,
-		} = this._getTotals();
+		} = getEventsTotals(userEvents.logEvents);
+
 		return (
 			<React.Fragment>
 				<div className="mx-auto text-center">
@@ -195,6 +149,7 @@ class LogPage extends React.Component {
 function mapStateToProps(state) {
 	const { challenges, userEvents, authentication } = state;
 	const { user } = authentication;
+	
 	return {
 		challengesLoading: challenges.loading,
 		user,
