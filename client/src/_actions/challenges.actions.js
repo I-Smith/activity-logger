@@ -6,6 +6,7 @@ export const challengesActions = {
 	create,
 	delete: _delete,
 	edit,
+	getReport,
 };
 
 function getAll() {
@@ -72,4 +73,22 @@ function edit(challengeId, challengeOptions) {
     function request() { return { type: challengesConstants.EDIT_REQUEST } }
     function success(response) { return { type: challengesConstants.EDIT_SUCCESS, response } }
     function failure(error) { return { type: challengesConstants.EDIT_FAILURE, error } }
+}
+
+function getReport(challengeId) {
+    return dispatch => {
+        dispatch(request(challengeId));
+
+        challengesService.getReport(challengeId)
+            .then(
+                report => {
+					dispatch(success(report))
+				},
+                error => dispatch(failure(error))
+            );
+    };
+
+    function request(challengeId) { return { type: challengesConstants.GETREPORT_REQUEST, payload: { challengeId } } }
+    function success(report) { return { type: challengesConstants.GETREPORT_SUCCESS, payload: { challengeId, report } } }
+    function failure(error) { return { type: challengesConstants.GETREPORT_FAILURE, payload: { challengeId, error } } }
 }

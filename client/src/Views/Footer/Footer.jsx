@@ -1,15 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-class FooterNav extends React.Component {
+class Footer extends React.Component {
 	render() {
 		const {user} = this.props;
 		return (
-			<nav className="navbar Navbar-color">
-				<div className="text-center">
-					<p>Somethin' funky? <a href="mailto:info@rucksonparade.com">Drop us a line</a>.</p>
+			// <nav className="navbar Navbar-color">
+				<div className="Footer text-center">
+					<p className="mt-3">Somethin' funky? <a href="mailto:info@rucksonparade.com">Drop us a line</a>.</p>
 				</div>
-			</nav>
+			// </nav>
 		);
 	}
 }
@@ -25,4 +25,4 @@ class FooterNav extends React.Component {
 
 // const connectedNavBar = connect(mapStateToProps)(NavBar);
 // export { connectedNavBar as NavBar };
-export { FooterNav };
+export { Footer };

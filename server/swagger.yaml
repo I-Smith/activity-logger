@@ -6,6 +6,8 @@ info:
 
 servers:
   - url: https://api.isaacsmith.tk
+    description: Test server
+  - url: http://localhost:4000
     description: Local development server
 
 paths:
@@ -1625,6 +1627,111 @@ paths:
                   message:
                     type: string
                     example: "Challenge deleted successfully"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+  /challenges/{challengeId}/report:
+    parameters:
+      - in: path
+        name: challengeId
+        description: Challenge id
+        required: true
+        example: "5eb12e197e06a76ccdefc121"
+        schema:
+          type: string
+    get:
+      summary: Get all events, grouped by user, tied to a single challenge by id
+      tags:
+        - challenges
+      description: Restricted to authenticated admins
+      operationId: getChallengeReport
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Report information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  challenge:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: "5eb12e197e06a76ccdefc121"
+                      name:
+                        type: string
+                        example: "Go Ruck January 2021"
+                      startDate:
+                        type: string
+                        example: "2021-01-01T00:00:00.000Z"
+                      endDate:
+                        type: string
+                        example: "2021-02-01T00:00:00.000Z"
+                  users:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        firstName:
+                          type: string
+                          example: "Jason"
+                        lastName:
+                          type: string
+                          example: "Watmore"
+                        email:
+                          type: string
+                          example: "jason@example.com"
+                        challengeEvents:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                                example: "5eb12e197e06a76ccdefc121"
+                              userId:
+                                type: string
+                                example: "5eb12e197e06a76ccdefc121"
+                              date:
+                                type: string
+                                example: "2020-05-05T09:12:57.848Z"
+                              isWorkout:
+                                type: boolean
+                                example: true
+                              challenge:
+                                type: string
+                                example: "standard"
+                              activity:
+                                type: object
+                                properties:
+                                  duration:
+                                    type: object
+                                    properties:
+                                      hours:
+                                        type: string
+                                        example: "2"
+                                      minutes:
+                                        type: string
+                                        example: "30"
+                                      seconds:
+                                        type: string
+                                        example: "45"
+                                  distance:
+                                    type: number
+                                    example: 10
+                                  couponWeight:
+                                    type: number
+                                    example: 20
+                                  ruckWeight:
+                                    type: number
+                                    example: 35
+                                  notes:
+                                    type: string
+                                    example: "Additional comments"
         "404":
           $ref: "#/components/responses/NotFoundError"
         "401":

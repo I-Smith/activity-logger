@@ -2,7 +2,8 @@ const db = require('_helpers/db');
 
 module.exports = {
     getAll,
-    getById,
+	getById,
+	getReport,
     create,
     update,
 	delete: _delete,
@@ -16,6 +17,22 @@ async function getAll() {
 async function getById(challengeId) {
     const challenge = await getChallenge(challengeId);
     return challenge;
+}
+
+async function getReport(challengeId) {
+	const challenge = await getChallenge(challengeId);
+	const rawUsers = await db.User.find().populate({
+		path: 'logEvents',
+		match: { 
+			challenge: challengeId
+		}
+	}).exec();
+	const users = rawUsers.map((user) => userDetails(user));
+
+	return {
+		challenge,
+		users,
+	};
 }
 
 async function create(params) {
@@ -50,4 +67,25 @@ async function getChallenge(challengeId) {
     const challenge = await db.Challenge.findById(challengeId);
     if (!challenge) throw 'Challenge not found';
     return challenge;
+}
+
+async function getUserChallengeEvents(userId, challengeId) {
+	const { firstName, lastName, email, logEvents } = await db.User.findById(userId).populate({
+		path: 'logEvents',
+		match: { 
+			challenge: challengeId
+		}
+	}).exec();
+	
+	return {
+		firstName,
+		lastName,
+		email,
+		// challengeEvents: logEvents.filter((event) => event.challenge === challengeId),
+		challengeEvents: logEvents,
+	};
+}
+function userDetails(user) {
+    const { id, firstName, lastName, email, logEvents } = user;
+    return { id, firstName, lastName, email, logEvents };
 }

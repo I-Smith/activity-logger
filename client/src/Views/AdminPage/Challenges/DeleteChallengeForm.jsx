@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Modal from 'react-modal';
 
-import { challengesActions } from '../../_actions';
+import { challengesActions } from '../../../_actions';
 
 class DeleteChallengeForm extends React.Component {
 	constructor(props) {

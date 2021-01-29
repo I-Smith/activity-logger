@@ -1,17 +1,27 @@
 html, body, #app {
 	height: 100%;
 }
-
+/* 
 #app {
 	min-height: 100%;
-}
+} */
 
 .page-content {
-	height: 100%;
-	overflow: auto;
-	padding: 10rem 1.5rem;
+	min-height: calc(100% - 15rem);
+	margin-top: 10rem;
+	overflow: visible;
+	/* padding: 10rem 1.5rem; */
+}
+#page-wrap {
+	min-height: 60vh;
 }
 
+.Footer {
+	margin-top: 5rem;
+	border-top: medium solid #eeeeee;
+	bottom: 0;
+	/* background: #ededed; */
+}
 .Modal {
 	position: relative;
 	top: 6rem;
