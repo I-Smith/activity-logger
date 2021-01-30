@@ -39,3 +39,4 @@ typings
 
 # Config
 config.json
+config.dev.json
