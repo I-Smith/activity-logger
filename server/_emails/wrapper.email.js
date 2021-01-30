@@ -7,6 +7,15 @@ function getWrapper(innerHtml) {
 	<html lang="en">
 		<head>
 			<meta charset="UTF-8">
+			<script>
+				const logo = document.getElementById('logo');
+				const matchDark = window.matchMedia('(prefers-color-scheme: dark)');
+			
+				const setScreenshot = isDark =>
+					(logo.src = (isDark) ? "cid:RucksOnParadeLogo-white" : "cid:RucksOnParadeLogo";
+			
+				setScreenshot(matchDark.matches);
+			</script>
 			<style>
 				body {
 					margin: 0;
@@ -16,13 +25,14 @@ function getWrapper(innerHtml) {
 				}
 				a { cursor: pointer; }
 				#content {
-					background-color: #ffffff;
+					background-color: #fefefe;
 					margin: auto;
 					padding: 48px;
 					height: 100%;
 					width: 50%;
 				}
 				header {
+					background-color: #eeeeee;
 					text-align: center;
 					color: white;
 					margin-bottom: 48px;
