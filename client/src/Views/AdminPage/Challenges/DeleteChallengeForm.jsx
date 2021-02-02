@@ -74,7 +74,7 @@ class DeleteChallengeForm extends React.Component {
 								<div className="mt-4 col-md-6 offset-md-3">
 									<button
 										type="button"
-										className="btn btn-primary mr-2"
+										className="btn btn-danger mr-2"
 										onClick={this.handleDeleteEvent}
 									>
 										Delete
