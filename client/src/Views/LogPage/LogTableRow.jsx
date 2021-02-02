@@ -6,6 +6,11 @@ import { EventForm } from '../EventForm';
 
 import { userEventsActions } from '../../_actions';
 
+import {
+	getChallenges,
+	getIsLoading as getIsChallengesLoading,
+} from '../../_selectors/challenges.selectors';
+
 class LogTableRow extends React.Component {
 	constructor(props) {
 		super(props);
@@ -34,7 +39,7 @@ class LogTableRow extends React.Component {
 		return _.round((4.44 * (ruck + coupon) * dist));
 	}
 	render() {
-		const { challenges, challengesLoading, event } = this.props;
+		const { challenges, isChallengesLoading, event } = this.props;
 		const {
 			id,
 			date,
@@ -58,7 +63,7 @@ class LogTableRow extends React.Component {
 				<td>{this._getRuckWork(distance, ruckWeight, couponWeight)}</td>
 				<td>
 
-					{challengesLoading ?(
+					{isChallengesLoading ?(
 						<div className="spinner-border spinner-border-sm text-light ml-2" role="status">
 							<span className="sr-only">Loading...</span>
 						</div>
@@ -85,10 +90,9 @@ class LogTableRow extends React.Component {
 
 function mapStateToProps(state) {
 	const { user } = state.authentication;
-	const { challenges, loading } = state.challenges;
 	return {
-		challenges,
-		challengesLoading: loading,
+		challenges: getChallenges(state),
+		isChallengesLoading: getIsChallengesLoading(state),
 		user,
 	};
 }
