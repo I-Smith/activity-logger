@@ -3,6 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { Challenges } from './Challenges';
+import { UserManagement } from './UserManagement'
 import { challengesActions } from '../../_actions';
 
 class AdminPage extends React.Component {
@@ -30,6 +31,7 @@ class AdminPage extends React.Component {
 				<div className="mx-auto text-center">
 					<h2>Admin</h2>
 					<Challenges />
+					<UserManagement />
 				</div>
 			</React.Fragment>
 		);

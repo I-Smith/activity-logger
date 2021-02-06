@@ -53,6 +53,9 @@ html, body, #app {
 .Table-action:hover .Edit {
 	color: #ffc107;
 }
+.UserManagement-margin-top {
+	margin-top: 64px;
+}
 .Unit-text {
 	font-size: x-small;
 	display: inline;

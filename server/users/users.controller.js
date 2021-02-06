@@ -89,7 +89,8 @@ function registerSchema(req, res, next) {
         email: Joi.string().email().required(),
         password: Joi.string().min(6).required(),
         confirmPassword: Joi.string().valid(Joi.ref('password')).required(),
-        acceptTerms: Joi.boolean().valid(true).required()
+		acceptTerms: Joi.boolean().valid(true).required(),
+		approved: Joi.boolean().default(false)
     });
     validateRequest(req, next, schema);
 }
@@ -109,7 +110,12 @@ function verifyEmailSchema(req, res, next) {
 
 function verifyEmail(req, res, next) {
     userService.verifyEmail(req.body)
-        .then(() => res.json({ message: 'Verification successful, you can now login' }))
+        .then((approved) => {
+			const message = approved
+				? 'Verification successful, you can now login'
+				: 'Verification successful. You will receive another email when your account has been approved';
+			return res.json({ message })
+		})
         .catch(next);
 }
 
@@ -155,9 +161,15 @@ function resetPassword(req, res, next) {
 }
 
 function getAll(req, res, next) {
-    userService.getAll()
-        .then(users => res.json(users))
-        .catch(next);
+	if (req.query.unapprovedOnly === 'true') {
+		userService.getUnapproved()
+			.then(users => res.json(users))
+			.catch(next);
+	} else {
+		userService.getAll()
+			.then(users => res.json(users))
+			.catch(next);
+	}
 }
 
 function getById(req, res, next) {
@@ -178,7 +190,8 @@ function createSchema(req, res, next) {
         email: Joi.string().email().required(),
         password: Joi.string().min(6).required(),
         confirmPassword: Joi.string().valid(Joi.ref('password')).required(),
-        role: Joi.string().valid(Role.Admin, Role.User).required()
+        role: Joi.string().valid(Role.Admin, Role.User).required(),
+		approved: Joi.boolean().default(false)
     });
     validateRequest(req, next, schema);
 }
@@ -200,6 +213,7 @@ function updateSchema(req, res, next) {
 
     // only admins can update role
     if (req.user.role === Role.Admin) {
+		schemaRules.approved = Joi.boolean().default(false);
         schemaRules.role = Joi.string().valid(Role.Admin, Role.User).empty('');
     }
 
@@ -213,7 +227,7 @@ function update(req, res, next) {
         return res.status(401).json({ message: 'Unauthorized' });
     }
 
-    userService.update(req.params.userId, req.body)
+    userService.update(req.params.userId, req.body, req.get('origin'))
         .then(user => res.json(user))
         .catch(next);
 }

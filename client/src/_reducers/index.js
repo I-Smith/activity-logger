@@ -10,18 +10,24 @@ import { challenges } from './challenges.reducer';
 import { filters } from './filters.reducer';
 import { report } from './report.reducer';
 import { userEvents } from './user-events.reducer';
-import { users } from './users.reducer';
+import {
+	editingUsers,
+	unapprovedUsers,
+	users,
+} from './users.reducer';
 
 const rootReducer = combineReducers({
 	alert,
 	authentication,
 	challenges,
+	editingUsers,
 	filters,
 	forgotPassword,
 	registration,
 	report,
 	resetPassword,
 	userEvents,
+	unapprovedUsers,
 	users,
 	verification,
 });

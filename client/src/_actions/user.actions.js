@@ -5,6 +5,8 @@ import { history } from '../_helpers';
 
 export const userActions = {
 	getAll,
+	getUnapproved,
+	edit,
 	forgotPassword,
     login,
 	logout,
@@ -25,9 +27,42 @@ function getAll() {
     };
 
     function request() { return { type: userConstants.GETALL_REQUEST } }
-    function success(users) { return { type: userConstants.GETALL_SUCCESS, users } }
-    function failure(error) { return { type: userConstants.GETALL_FAILURE, error } }
+    function success(users) { return { type: userConstants.GETALL_SUCCESS, payload: { users } } }
+    function failure(error) { return { type: userConstants.GETALL_FAILURE, payload: { error } } }
 }
+
+function getUnapproved() {
+	return dispatch => {
+        dispatch(request());
+
+        userService.getUnapproved()
+            .then(
+                users => dispatch(success(users)),
+                error => dispatch(failure(error))
+            );
+    };
+
+    function request() { return { type: userConstants.GET_UNAPPROVED_REQUEST } }
+    function success(users) { return { type: userConstants.GET_UNAPPROVED_SUCCESS, payload: { users } } }
+    function failure(error) { return { type: userConstants.GET_UNAPPROVED_FAILURE, payload: { error } } }
+}
+
+function edit(userId, userOptions) {
+    return dispatch => {
+        dispatch(request(userId));
+
+        userService.edit(userId, userOptions)
+            .then(
+                response => dispatch(success(response)),
+                error => dispatch(failure(error, userId))
+            );
+    };
+
+    function request(userId) { return { type: userConstants.EDIT_REQUEST, payload: { userId }} }
+    function success(response) { return { type: userConstants.EDIT_SUCCESS, payload: { response }} }
+    function failure(error, userId) { return { type: userConstants.EDIT_FAILURE, payload: { error, userId } } }
+}
+
 
 function forgotPassword(email) {
     return dispatch => {

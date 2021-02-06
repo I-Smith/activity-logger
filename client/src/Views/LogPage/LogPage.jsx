@@ -121,9 +121,8 @@ class LogPage extends React.Component {
 						{/* {userEvents.error && <span className="text-danger">ERROR: {JSON.stringify(userEvents.error)}</span>} */}
 					</div>
 
-					<Filters />
-
 					{/********** Events table **********/}
+					{_.size(userEvents.logEvents) > 0 && <Filters />}
 					{_.size(filteredLogEvents) > 0 ? (
 						<table className="table table-responsive-lg table-striped table-hover mt-2">
 							<thead>
