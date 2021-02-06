@@ -3,6 +3,8 @@ import { authHeader, handleResponse } from '../_helpers';
 
 export const userService = {
 	getAll,
+	getUnapproved,
+	edit,
 	forgotPassword,
     login,
 	logout,
@@ -18,6 +20,29 @@ function getAll() {
     };
 
     return fetch(`${config.apiUrl}/users`, requestOptions).then(handleResponse);
+}
+
+function getUnapproved() {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+    };
+
+    return fetch(`${config.apiUrl}/users?unapprovedOnly=true`, requestOptions).then(handleResponse);
+}
+
+function edit(userId, userOptions) {
+	const requestOptions = {
+        method: 'PUT',
+		headers: {
+			...authHeader(),
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(userOptions),
+	};
+	// const userId = localStorage.getItem('user').id;
+
+    return fetch(`${config.apiUrl}/users/${userId}`, requestOptions).then(handleResponse);
 }
 
 function forgotPassword(email) {

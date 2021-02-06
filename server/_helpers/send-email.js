@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
-const config = require('config.json');
-
+// const config = require('config.json');
+const config = require('config.dev.json');
 module.exports = sendEmail;
 
 async function sendEmail({ to, subject, html, from = config.emailFrom }) {
@@ -15,8 +15,8 @@ async function sendEmail({ to, subject, html, from = config.emailFrom }) {
 			path: __dirname +'/RUCKS ON PARADE logo.png',
 			cid: 'RucksOnParadeLogo'
 		}, {
-			filename: 'RUCKS ON PARADE-logo-white.png',
-			path: __dirname +'/RUCKS ON PARADE-logo-white.png',
+			filename: 'RUCKS ON PARADE logo-white.png',
+			path: __dirname +'/RUCKS ON PARADE logo-white.png',
 			cid: 'RucksOnParadeLogo-white'
 		}]
 	});

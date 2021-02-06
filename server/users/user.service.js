@@ -7,6 +7,7 @@ const db = require('_helpers/db');
 const Role = require('_helpers/role');
 const {
 	getAlreadyRegisteredHtml,
+	getApprovalHtml,
 	getPasswordReCtrlsetHtml,
 	getVerificationHtml,
 } = require('../_emails/email-templates');
@@ -20,7 +21,8 @@ module.exports = {
     forgotPassword,
     validateResetToken,
     resetPassword,
-    getAll,
+	getAll,
+	getUnapproved,
     getById,
     create,
     update,
@@ -31,9 +33,11 @@ module.exports = {
 async function authenticate({ email, password, ipAddress }) {
     const user = await db.User.findOne({ email });
 
-    if (!user || !user.isVerified || !bcrypt.compareSync(password, user.passwordHash)) {
+    if (!user || !bcrypt.compareSync(password, user.passwordHash)) {
         throw 'Email or password is incorrect';
-    }
+	}
+	if (!user.isVerified) throw 'Please verify your account before logging in';
+	if (!user.approved) throw 'An admin must approve your account before you can log in';
 
     // authentication successful so generate jwt and refresh tokens
     const token = generateJwtToken(user);
@@ -114,7 +118,8 @@ async function verifyEmail({ token }) {
 	if (user.verified) throw 'This email has already been verified';
 
     user.verified = Date.now();
-    await user.save();
+	await user.save();
+	return user.approved;
 }
 
 async function forgotPassword({ email }, origin) {
@@ -163,6 +168,11 @@ async function getAll() {
     return users.map(x => basicDetails(x));
 }
 
+async function getUnapproved() {
+    const users = await db.User.find({ approved: { $ne: true } });
+    return users.map(x => basicDetails(x));
+}
+
 async function getById(userId) {
     const user = await getUser(userId);
     return basicDetails(user);
@@ -186,8 +196,10 @@ async function create(params) {
     return basicDetails(user);
 }
 
-async function update(userId, params) {
-    const user = await getUser(userId);
+async function update(userId, params, origin) {
+	const user = await getUser(userId);
+	
+	if (!user) throw "Invalid user";
 
     // validate (if email was changed)
     if (params.email && user.email !== params.email && await db.User.findOne({ email: params.email })) {
@@ -197,12 +209,16 @@ async function update(userId, params) {
     // hash password if it was entered
     if (params.password) {
         params.passwordHash = hash(params.password);
-    }
+	}
 
     // copy params to user and save
     Object.assign(user, params);
     user.updated = Date.now();
-    await user.save();
+	await user.save();
+	
+	if (params.approved) {
+		await sendApprovalEmail(user, origin);
+	}
 
     return basicDetails(user);
 }
@@ -263,8 +279,8 @@ function randomTokenString() {
 }
 
 function basicDetails(user) {
-    const { id, firstName, lastName, email, role, created, updated, isVerified } = user;
-    return { id, firstName, lastName, email, role, created, updated, isVerified };
+    const { id, firstName, lastName, email, role, created, updated, isVerified, approved } = user;
+    return { id, firstName, lastName, email, role, created, updated, isVerified, approved };
 }
 
 function logEventsDetails(user) {
@@ -277,6 +293,14 @@ async function sendVerificationEmail(user, origin) {
         to: user.email,
         subject: 'Activity Log - Verify Email',
         html: getVerificationHtml(user, origin),
+    });
+}
+
+async function sendApprovalEmail(user, origin) {
+	await sendEmail({
+        to: user.email,
+        subject: 'Activity Log - Approved!',
+        html: getApprovalHtml(user, origin),
     });
 }
 
