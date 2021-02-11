@@ -237,7 +237,7 @@ class EventForm extends React.Component {
 										className="btn btn-primary mr-2"
 										onClick={this.handleCreateUpdateEvent}
 									>
-										{eventId ? 'Save changes' : 'Add Event'}
+										{eventId ? 'Save changes' : 'Add Activity'}
 									</button>
 									<button
 										type="button"

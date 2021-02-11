@@ -25,7 +25,7 @@ export const getReportData = (store, challengeId) => {
 			email: user.email,
 			eventCount: userTotals.eventCount,
 			totalDistance: userTotals.totalDistance,
-			totalDuration: `${userTotals.totalHours}:${userTotals.totalMinutes}:${userTotals.totalSeconds}`,
+			totalDuration: userTotals.formattedDuration,
 			totalWeight: userTotals.totalWeight,
 			totalWork: userTotals.totalWork,
 		}
