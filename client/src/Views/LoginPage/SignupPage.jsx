@@ -129,7 +129,7 @@ class SignupPage extends React.Component {
 							</div>
 							<div className={'form-group form-check' + (submitted && !acceptTerms ? ' has-error' : '')}>
 								<input type="checkbox" className="form-check-input" name="acceptTerms" value={acceptTerms} onChange={this.handleChange}/>
-								<label htmlFor="acceptTerms">I agree to the <a href="">Terms and Conditions</a></label>
+								<label htmlFor="acceptTerms">I agree to the <a href="https://www.rucksonparade.com/web-site-terms" target="_blank">Terms and Conditions</a></label>
 								{submitted && !acceptTerms &&
 									<div className="help-block text-danger">You must agree to continue</div>
 								}

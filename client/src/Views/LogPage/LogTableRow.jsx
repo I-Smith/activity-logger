@@ -5,11 +5,11 @@ import { connect } from 'react-redux';
 import { EventForm } from '../EventForm';
 
 import { userEventsActions } from '../../_actions';
-
 import {
 	getChallenges,
 	getIsLoading as getIsChallengesLoading,
 } from '../../_selectors/challenges.selectors';
+import { formatDuration } from '../../util/formatDuration';
 
 class LogTableRow extends React.Component {
 	constructor(props) {
@@ -25,18 +25,20 @@ class LogTableRow extends React.Component {
 		this.props.dispatch(userEventsActions.delete(user.id, eventId));
 	}
 
-	_formatDuration(duration) {
-		const hours = String(duration.hours || '0').padStart(2, '0'); 
-		const minutes = String(duration.minutes || '0').padStart(2, '0'); 
-		const seconds = String(duration.seconds || '0').padStart(2, '0'); 
-		return `${hours}:${minutes}:${seconds}`
+	_formatDuration() {
+		const { event } = this.props;
+		const seconds = parseFloat(_.get(event, 'activity.duration.seconds', 0));
+		const minutes = parseFloat(_.get(event, 'activity.duration.minutes', 0));
+		const hours = parseFloat(_.get(event, 'activity.duration.hours', 0));
+
+		return formatDuration(hours, minutes, seconds);
 	}
 
 	_getRuckWork(distance, ruckWeight, couponWeight) {
 		const dist = distance ? parseFloat(distance) : 0;
 		const ruck = ruckWeight ? parseFloat(ruckWeight) : 0;
 		const coupon = couponWeight ? parseFloat(couponWeight) : 0
-		return _.round((4.44 * (ruck + coupon) * dist));
+		return _.round(((ruck + coupon) * dist));
 	}
 	render() {
 		const { challenges, isChallengesLoading, event } = this.props;
@@ -57,7 +59,7 @@ class LogTableRow extends React.Component {
 				<td>{dayjs(date).format('MM/DD/YY')}</td>
 				<td>{challengeName || '-'}</td>
 				<td>{_.round(distance, 2) || '-'}</td>
-				<td>{this._formatDuration(duration)}</td>
+				<td>{this._formatDuration()}</td>
 				<td>{ruckWeight || '-'}</td>
 				<td>{couponWeight || '-'}</td>
 				<td>{this._getRuckWork(distance, ruckWeight, couponWeight)}</td>

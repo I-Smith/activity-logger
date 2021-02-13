@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
-// const config = require('config.json');
-const config = require('config.dev.json');
+const config = require('config.json');
+// const config = require('config.dev.json');
 module.exports = sendEmail;
 
 async function sendEmail({ to, subject, html, from = config.emailFrom }) {

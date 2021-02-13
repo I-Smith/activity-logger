@@ -9,7 +9,7 @@ class NavBar extends React.Component {
 		return (
 			<nav className="navbar navbar-expand-md fixed-top Navbar-color">
 				<div className="container">
-					<a className="navbar-brand" href="https://www.rucksonparade.com/">
+					<a className="navbar-brand" href="https://www.rucksonparade.com/" target="_blank">
 						<img className="Navbar-logo" src="../../../public/RUCKS ON PARADE logo.png" alt="Rucks On Parade"/>
 					</a>
 

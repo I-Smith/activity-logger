@@ -56,40 +56,47 @@ class LogPage extends React.Component {
 			location,
 		} = this.props;
 		const {
+			formattedDuration,
 			totalDistance,
-			totalSeconds,
-			totalMinutes,
-			totalHours,
-			// totalDuration,
 			totalWeight,
 			totalWork,
 		} = getEventsTotals(filteredLogEvents);
 
 		return (
 			<div className="mx-auto text-center">
-				<h3 className="">
-					Hello, {user.firstName}. Welcome to your activity chart!
+				<h3 className="mb-2">
+					Hello, {user.firstName}. Welcome to the Activity Tracker!
 				</h3>
+				<h5><a href="https://www.instagram.com/rucksonparade" target="_blank">&#x23;ComeWithItNow</a></h5>
+				<h5><a href="https://www.instagram.com/rucksonparade" target="_blank">&#x23;RucksOnParade</a></h5>
 
 				{/********** Totals jumbotron **********/}
 				<div className="jumbotron mt-4">
-					<h3 className="mt-0 mb-2"><strong>Your Totals</strong></h3>
+					<h3 className="mt-0 mb-2"><strong>Activity Totals</strong></h3>
 					<div className="row">
 						<div className="col-md-4 mt-2">
-							<h4><strong>Distance</strong></h4>
-							<h4>{totalDistance} miles</h4>
-						</div>
-						<div className="col-md-4 mt-2">
-							<h4><strong>Duration</strong></h4>
-							<h4>{totalHours}:{totalMinutes}:{totalSeconds}</h4>
-						</div>
-						<div className="col-md-4 mt-2">
-							<h4><strong>RuckWork</strong>
+							<h4><strong>Distance</strong>
 								<p className="Tooltip"> &#x24D8;
-									<span className="tooltiptext">Your "RuckWork" is calculated based on weight carried over distance</span>
+									<span className="tooltiptext">miles</span>
+								</p>
+							</h4>
+							<h4>{totalDistance}</h4>
+						</div>
+						<div className="col-md-4 mt-2">
+							<h4><strong>Duration</strong>
+								<p className="Tooltip"> &#x24D8;
+									<span className="tooltiptext">hours:minutes:seconds</span>
+								</p>
+							</h4>
+							<h4>{formattedDuration}</h4>
+						</div>
+						<div className="col-md-4 mt-2">
+							<h4><strong>Work</strong>
+								<p className="Tooltip"> &#x24D8;
+									<span className="tooltiptext">(Ruck &#x2B; Coupon) &#xD7; Distance</span>
 								</p>
 							</h4>			
-							<h4>{totalWork} RuckJoules</h4>
+							<h4>{totalWork}</h4>
 						</div>
 					</div>
 				</div>
@@ -106,7 +113,7 @@ class LogPage extends React.Component {
 						<EventForm
 							buttonClassNames="btn-success"
 						>
-							Add New Event
+							Add New Activity
 						</EventForm>
 					)}
 					{/********** END Add Event Button **********/}
@@ -129,11 +136,11 @@ class LogPage extends React.Component {
 								<tr>
 									<th scope="col">Date</th>
 									<th scope="col">Challenge</th>
-									<th scope="col">Distance <p className="Unit-text">(mi)</p></th>
+									<th scope="col">Distance<p className="Unit-text">(mi)</p></th>
 									<th scope="col">Duration</th>
 									<th scope="col">Ruck<p className="Unit-text">(lbs)</p></th>
 									<th scope="col">Coupon<p className="Unit-text">(lbs)</p></th>
-									<th scope="col">RuckWork</th>
+									<th scope="col">Work</th>
 									<th scope="col">Edit/Delete</th>
 								</tr>
 							</thead>
