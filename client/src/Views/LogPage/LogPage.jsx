@@ -85,7 +85,7 @@ class LogPage extends React.Component {
 						<div className="col-md-4 mt-2">
 							<h4><strong>Duration</strong>
 								<p className="Tooltip"> &#x24D8;
-									<span className="tooltiptext">hours:minutes:seconds</span>
+									<span className="tooltiptext">HH:MM:SS</span>
 								</p>
 							</h4>
 							<h4>{formattedDuration}</h4>

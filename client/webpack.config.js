@@ -35,45 +35,7 @@ module.exports = {
     externals: {
         // global app config object
         config: JSON.stringify({
-            apiUrl: 'https://api.isaacsmith.tk',
+            apiUrl: 'https://activitytracker-api.rucksonparade.com',
         })
     }
-//     mode: 'production',
-//     resolve: {
-// 		modules: [
-// 			'node_modules',
-// 		],
-//         extensions: ['.js', '.jsx', '.json', '.css', '.scss']
-//     },
-// 	output: {
-// 		filename: '[name].js',
-// 		path: resolve(__dirname, 'dist'),
-// 	},
-
-// 	context: resolve(__dirname, 'src'),
-	
-//     module: {
-//         rules: [
-//             { test: /\.jsx?$/, use: 'babel-loader' },
-//             { test: /\.css$/, use: ['style-loader', 'css-loader'] },
-//             { test: /\.json$/, type: 'javascript/auto', loader: 'json-loader' },
-//             { test: /\.(jpe?g|png|gif|ico)$/i, loader: 'file-loader?name=[name].[ext]' }
-//         ]
-// 	},
-// 	plugins: [
-// 		new CopyWebpackPlugin({
-// 			patterns: [
-// 				{ from: '../public', to: 'public' },
-// 			],
-// 		}),
-// 		new webpack.LoaderOptionsPlugin({
-// 			minimize: true,
-// 		}),
-// 	],
-//     externals: {
-//         // global app config object
-//         config: JSON.stringify({
-//             apiUrl: 'http://localhost:4000'
-//         })
-//     }
 }
