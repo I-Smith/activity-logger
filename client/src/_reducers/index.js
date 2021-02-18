@@ -12,7 +12,6 @@ import { report } from './report.reducer';
 import { userEvents } from './user-events.reducer';
 import {
 	editingUsers,
-	unapprovedUsers,
 	users,
 } from './users.reducer';
 
@@ -27,7 +26,6 @@ const rootReducer = combineReducers({
 	report,
 	resetPassword,
 	userEvents,
-	unapprovedUsers,
 	users,
 	verification,
 });

@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const { ACTIVE, DENIED, LOCKED, UNREVIEWED } = require('./userStatuses');
+
 const Schema = mongoose.Schema;
 
 const schema = new Schema({
@@ -7,8 +9,13 @@ const schema = new Schema({
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
 	acceptTerms: Boolean,
-	approved: Boolean,
     role: { type: String, required: true },
+	status: {
+		type: String,
+		required: true,
+		enum: [ACTIVE, DENIED, LOCKED, UNREVIEWED],
+		default: UNREVIEWED,
+	},
     verificationToken: String,
     verified: Date,
     resetToken: {

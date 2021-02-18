@@ -64,9 +64,9 @@ class LoginPage extends React.Component {
 								<div className="help-block text-danger">Password is required</div>
 							}
 						</div>
-						{failed &&
+						{/* {failed &&
 							<p className="text-danger">Incorrect Email or Password entered</p>
-						}
+						} */}
 						<div className="form-group">
 							<button className="btn btn-primary">
 								Login

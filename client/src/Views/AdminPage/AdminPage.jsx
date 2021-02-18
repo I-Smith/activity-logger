@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { Challenges } from './Challenges';
-import { UserManagement } from './UserManagement'
+import { UserManagement } from './Users'
 import { challengesActions } from '../../_actions';
 
 class AdminPage extends React.Component {

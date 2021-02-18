@@ -36,6 +36,7 @@ module.exports = {
         // global app config object
         config: JSON.stringify({
             apiUrl: 'https://activitytracker-api.rucksonparade.com',
+			// apiUrl: 'https://api.isaacsmith.tk',
         })
     }
 }

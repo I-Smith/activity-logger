@@ -1,0 +1,6 @@
+module.exports = {
+	ACTIVE: 'ACTIVE',
+	DENIED: 'DENIED',
+	LOCKED: 'LOCKED',
+	UNREVIEWED: 'UNREVIEWED',
+};

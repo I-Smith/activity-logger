@@ -6,6 +6,7 @@ const authorize = require('_middleware/authorize')
 const Role = require('_helpers/role');
 const userService = require('./user.service');
 const usersEventsController = require('./users-events/users-events.controller');
+const { UNREVIEWED, ACTIVE, DENIED, LOCKED } = require('./userStatuses');
 
 // routes
 router.post('/authenticate', authenticateSchema, authenticate);
@@ -90,7 +91,6 @@ function registerSchema(req, res, next) {
         password: Joi.string().min(6).required(),
         confirmPassword: Joi.string().valid(Joi.ref('password')).required(),
 		acceptTerms: Joi.boolean().valid(true).required(),
-		approved: Joi.boolean().default(false)
     });
     validateRequest(req, next, schema);
 }
@@ -110,10 +110,10 @@ function verifyEmailSchema(req, res, next) {
 
 function verifyEmail(req, res, next) {
     userService.verifyEmail(req.body)
-        .then((approved) => {
-			const message = approved
-				? 'Verification successful, you can now login'
-				: 'Verification successful. You will receive another email when your account has been approved';
+        .then((isUnreviewed) => {
+			const message = isUnreviewed
+				? 'Verification successful. You will receive another email when your account has been reviewed'
+				: 'Verification successful.';
 			return res.json({ message })
 		})
         .catch(next);
@@ -161,8 +161,8 @@ function resetPassword(req, res, next) {
 }
 
 function getAll(req, res, next) {
-	if (req.query.unapprovedOnly === 'true') {
-		userService.getUnapproved()
+	if (req.query.status) {
+		userService.getAllByStatus(req.query.status)
 			.then(users => res.json(users))
 			.catch(next);
 	} else {
@@ -191,7 +191,6 @@ function createSchema(req, res, next) {
         password: Joi.string().min(6).required(),
         confirmPassword: Joi.string().valid(Joi.ref('password')).required(),
         role: Joi.string().valid(Role.Admin, Role.User).required(),
-		approved: Joi.boolean().default(false)
     });
     validateRequest(req, next, schema);
 }
@@ -211,9 +210,9 @@ function updateSchema(req, res, next) {
         confirmPassword: Joi.string().valid(Joi.ref('password')).empty('')
     };
 
-    // only admins can update role
+    // only admins can update role or status
     if (req.user.role === Role.Admin) {
-		schemaRules.approved = Joi.boolean().default(false);
+		schemaRules.status = Joi.string().valid(ACTIVE, DENIED, LOCKED, UNREVIEWED);
         schemaRules.role = Joi.string().valid(Role.Admin, Role.User).empty('');
     }
 

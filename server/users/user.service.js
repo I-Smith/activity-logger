@@ -8,9 +8,12 @@ const Role = require('_helpers/role');
 const {
 	getAlreadyRegisteredHtml,
 	getApprovalHtml,
-	getPasswordReCtrlsetHtml,
+	getDenialHtml,
+	getLockHtml,
+	getPasswordResetHtml,
 	getVerificationHtml,
 } = require('../_emails/email-templates');
+const { ACTIVE, DENIED, LOCKED, UNREVIEWED } = require('./userStatuses');
 
 module.exports = {
     authenticate,
@@ -22,7 +25,7 @@ module.exports = {
     validateResetToken,
     resetPassword,
 	getAll,
-	getUnapproved,
+	getAllByStatus,
     getById,
     create,
     update,
@@ -37,8 +40,9 @@ async function authenticate({ email, password, ipAddress }) {
         throw 'Email or password is incorrect';
 	}
 	if (!user.isVerified) throw 'Please verify your account before logging in';
-	if (!user.approved) throw 'An admin must approve your account before you can log in';
-
+	if (user.status === UNREVIEWED) throw 'An admin must approve your account before you can log in';
+	if (user.status === DENIED || user.status === LOCKED) throw 'Your account has been disabled. If you think this is a mistake, please contact us at <a href="mailto:info@rucksonparade.com">info@rucksonparade.com</a>.'
+ 
     // authentication successful so generate jwt and refresh tokens
     const token = generateJwtToken(user);
     const refreshToken = generateRefreshToken(user, ipAddress);
@@ -99,7 +103,7 @@ async function register(params, origin) {
     // first registered user is an admin
     const isFirstUser = (await db.User.countDocuments({})) === 0;
 	user.role = isFirstUser ? Role.Admin : Role.User;
-	user.approved = isFirstUser;
+	user.status = isFirstUser ? ACTIVE : UNREVIEWED;
     user.verificationToken = randomTokenString();
 
     // hash password
@@ -120,7 +124,8 @@ async function verifyEmail({ token }) {
 
     user.verified = Date.now();
 	await user.save();
-	return user.approved;
+
+	return user.status === UNREVIEWED;
 }
 
 async function forgotPassword({ email }, origin) {
@@ -169,8 +174,8 @@ async function getAll() {
     return users.map(x => basicDetails(x));
 }
 
-async function getUnapproved() {
-    const users = await db.User.find({ approved: { $ne: true } });
+async function getAllByStatus(status) {
+    const users = await db.User.find({ status });
     return users.map(x => basicDetails(x));
 }
 
@@ -217,8 +222,14 @@ async function update(userId, params, origin) {
     user.updated = Date.now();
 	await user.save();
 	
-	if (params.approved) {
+	if (params.status === ACTIVE) {
 		await sendApprovalEmail(user, origin);
+	}
+	else if (params.status === DENIED) {
+		await sendDenialEmail(user, origin);
+	}
+	else if (params.status === LOCKED) {
+		await sendLockEmail(user, origin);
 	}
 
     return basicDetails(user);
@@ -280,8 +291,8 @@ function randomTokenString() {
 }
 
 function basicDetails(user) {
-    const { id, firstName, lastName, email, role, created, updated, isVerified, approved } = user;
-    return { id, firstName, lastName, email, role, created, updated, isVerified, approved };
+    const { id, firstName, lastName, email, role, created, updated, isVerified, status } = user;
+    return { id, firstName, lastName, email, role, created, updated, isVerified, status };
 }
 
 function logEventsDetails(user) {
@@ -292,7 +303,7 @@ function logEventsDetails(user) {
 async function sendVerificationEmail(user, origin) {
     await sendEmail({
         to: user.email,
-        subject: 'Activity Log - Verify Email',
+        subject: 'Activity Tracker - Verify Email',
         html: getVerificationHtml(user, origin),
     });
 }
@@ -300,15 +311,31 @@ async function sendVerificationEmail(user, origin) {
 async function sendApprovalEmail(user, origin) {
 	await sendEmail({
         to: user.email,
-        subject: 'Activity Log - Approved!',
+        subject: 'Activity Tracker - Approved!',
         html: getApprovalHtml(user, origin),
+    });
+}
+
+async function sendDenialEmail(user, origin) {
+	await sendEmail({
+        to: user.email,
+        subject: 'Activity Tracker - Account Denied',
+        html: getDenialHtml(user, origin),
+    });
+}
+
+async function sendLockEmail(user, origin) {
+	await sendEmail({
+        to: user.email,
+        subject: 'Activity Tracker - Account Locked',
+        html: getLockHtml(user, origin),
     });
 }
 
 async function sendAlreadyRegisteredEmail(email, origin) {
     await sendEmail({
         to: email,
-        subject: 'Activity Log - Email Already Registered',
+        subject: 'Activity Tracker - Email Already Registered',
         html: getAlreadyRegisteredHtml(email, origin),
     });
 }
@@ -317,6 +344,6 @@ async function sendPasswordResetEmail(user, origin) {
    await sendEmail({
         to: user.email,
         subject: 'Sign-up Verification API - Reset Password',
-        html: getPasswordReCtrlsetHtml(user, origin),
+        html: getPasswordResetHtml(user, origin),
     });
 }
